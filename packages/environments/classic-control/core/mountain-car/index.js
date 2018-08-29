@@ -7,7 +7,6 @@ const actions = require('./types');
 
 const TIMEOUT = 5000; // 20000 is a little long
 
-/* eslint-disable class-methods-use-this */
 class MountainCarFactory extends DiscreteEnvironmentFactory {
   constructor() {
     super();

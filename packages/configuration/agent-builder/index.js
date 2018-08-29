@@ -1,5 +1,17 @@
 const AgentFactory = require('@rl-js/interfaces/agent-factory');
 
+class GenericAgentFactory extends AgentFactory {
+  constructor(create) {
+    super();
+    this.create = create;
+  }
+
+  // overridden
+  createAgent() {
+    return this.create();
+  }
+}
+
 /**
  * Class defining a builder for AgentFactories.
  * Used for defining the configuration of the
@@ -47,17 +59,19 @@ class AgentBuilder {
       throw new Error('EnvironmentFactory not set');
     }
 
-    const _hyperparameters = {};
+    const finalHyperparameters = {};
 
-    for (const hyperparameter of this.hyperparameterDefinitions) {
+    this.hyperparameterDefinitions.forEach((hyperparameter) => {
       const name = hyperparameter.getName();
       const value = hyperparameters[name] != null
         ? hyperparameters[name]
         : hyperparameter.defaultValue();
-      _hyperparameters[name] = value;
-    }
+      finalHyperparameters[name] = value;
+    });
 
-    return new GenericAgentFactory(() => this.createAgent(environmentFactory, _hyperparameters));
+    return new GenericAgentFactory(
+      () => this.createAgent(environmentFactory, finalHyperparameters),
+    );
   }
 
   /**
@@ -99,17 +113,6 @@ class AgentBuilder {
       hyperparameters: this.hyperparameterDefinitions,
       createAgent: this.createAgent,
     });
-  }
-}
-
-class GenericAgentFactory extends AgentFactory {
-  constructor(createAgent) {
-    super();
-    this._createAgent = createAgent;
-  }
-
-  createAgent() {
-    return this._createAgent();
   }
 }
 

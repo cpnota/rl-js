@@ -21,7 +21,8 @@ class ContinuousEnvironmentFactory extends EnvironmentFactory {
   getObservationCount() {}
 
   /**
-   * @returns {number[]} An array whose first element represents the lower bound of the action, and the second element represents the upper bound.
+   * @returns {number[]} An array whose first element represents the lower bound of the action,
+   * and the second element represents the upper bound.
    */
   getActionRange() {}
 }

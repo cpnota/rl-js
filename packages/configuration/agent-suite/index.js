@@ -38,7 +38,7 @@ class AgentSuite {
    * @returns {AgentBuilder}
    */
   getAgentBuilder(id) {
-    const builder = this.builders.find(builder => builder.getId() === id);
+    const builder = this.builders.find(b => b.getId() === id);
     return builder && builder.clone(); // create a new instance
   }
 

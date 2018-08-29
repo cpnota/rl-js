@@ -11,7 +11,8 @@
       "jest/globals": true
   },
   "rules": {
-      "global-require": 0,
-      "react/jsx-one-expression-per-line": false
+      "class-methods-use-this": "off",
+      "global-require": "off",
+      "react/jsx-one-expression-per-line": "off"
   }
 }

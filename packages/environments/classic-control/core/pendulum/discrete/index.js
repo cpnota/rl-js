@@ -8,7 +8,6 @@ const resolveAction = require('./resolve-action');
 const getObservation = require('../get-observation');
 const actions = require('./types');
 
-/* eslint-disable class-methods-use-this */
 class DiscretePendulumFactory extends DiscreteEnvironmentFactory {
   constructor(constants = {}) {
     super();

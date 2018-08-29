@@ -1,5 +1,7 @@
 const checkInterface = require('check-interface');
 
+/* eslint-disable no-unused-vars */
+
 /**
  * Interface defining hyperparameter configuration
  * @interface Hyperparameter

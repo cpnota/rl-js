@@ -7,7 +7,6 @@ const defaultConstants = require('./constants');
 const getObservation = require('./get-observation');
 const actions = require('./types');
 
-/* eslint-disable class-methods-use-this */
 class CartPoleFactory extends DiscreteEnvironmentFactory {
   constructor(constants = {}) {
     super();

@@ -31,18 +31,18 @@ class EnvironmentBuilder {
    */
   buildFactory() {
     const { hyperparameters = {} } = this;
-    const _hyperparameters = {};
+    const finalHyperparameters = {};
 
-    for (const hyperparameter of this.hyperparameterDefinitions) {
+    this.hyperparameterDefinitions.forEach((hyperparameter) => {
       const name = hyperparameter.getName();
       const value = hyperparameters[name] != null
         ? hyperparameters[name]
         : hyperparameter.defaultValue();
-      _hyperparameters[name] = value;
-    }
+      finalHyperparameters[name] = value;
+    });
 
     return typeof this.factory === 'function'
-      ? this.factory(_hyperparameters)
+      ? this.factory(finalHyperparameters)
       : this.factory;
   }
 

@@ -15,7 +15,6 @@ const resolveAction = (state, action) => ({
   payload: boundTorque(action),
 });
 
-/* eslint-disable class-methods-use-this */
 class PendulumFactory extends ContinuousEnvironmentFactory {
   constructor(constants = {}) {
     /* eslint-disable no-unreachable */

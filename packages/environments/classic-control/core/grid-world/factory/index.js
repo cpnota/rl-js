@@ -7,7 +7,6 @@ const configureTerminated = require('./terminated');
 const getStateTabular = require('./get-state/tabular');
 const actions = require('../types');
 
-/* eslint-disable class-methods-use-this */
 const gridworldFactory = ({
   layout,
   doNothingProbability = 0,
