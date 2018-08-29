@@ -1,0 +1,17 @@
+{
+  "parser": "babel-eslint",
+  "extends": [
+      "airbnb"
+  ],
+  "plugins": [
+      "jest"
+  ],
+  "env": {
+      "browser": true,
+      "jest/globals": true
+  },
+  "rules": {
+      "global-require": 0,
+      "react/jsx-one-expression-per-line": false
+  }
+}

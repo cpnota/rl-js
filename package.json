@@ -1,0 +1,18 @@
+{
+  "name": "@rl-js/root",
+  "private": true,
+  "devDependencies": {
+    "babel-eslint": "^8.2.6",
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^21.22.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.11.1",
+    "jsdoc-to-markdown": "^4.0.1",
+    "lerna": "^3.2.1"
+  },
+  "scripts": {
+    "lint": "eslint **/*.js --fix"
+  }
+}
