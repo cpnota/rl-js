@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Icon, Step, Button } from 'semantic-ui-react';
 
-const LearningCurveStepper = ({ step, agent, environment, stepBackward, setStep }) => (
+const LearningCurveStepper = ({
+  step, agent, environment, stepBackward, setStep,
+}) => (
   <Step.Group stackable="tablet">
     {step > 0 && step < 4 && (
       <Button icon onClick={stepBackward}>

@@ -46,7 +46,7 @@ HyperparameterSelection.propTypes = {
   }).isRequired,
   hyperparameters: PropTypes.objectOf(PropTypes.any),
   setHyperparameter: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,  
+  onSubmit: PropTypes.func.isRequired,
 };
 
 HyperparameterSelection.defaultProps = {

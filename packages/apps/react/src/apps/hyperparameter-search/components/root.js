@@ -13,7 +13,7 @@ import Results from './results';
 import RunConfig from './run-config';
 import * as actions from '../actions';
 
-console.log(AgentSelection)
+console.log(AgentSelection);
 
 const getEnvironmentType = agent => configuration
   .getAgentSuite(agent.suite)
