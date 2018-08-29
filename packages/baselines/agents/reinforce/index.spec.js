@@ -1,6 +1,5 @@
 const {
   StateValueFunction,
-  PolicyTraces,
   Policy,
   Environment,
   StateTraces,

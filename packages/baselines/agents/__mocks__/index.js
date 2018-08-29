@@ -15,11 +15,11 @@ const mock = (Interface) => {
   class Impl extends Interface {
     constructor() {
       super();
-      requiredMethods.forEach(method => (this[method] = jest.fn()));
+      requiredMethods.forEach((method) => { this[method] = jest.fn(); });
     }
   }
 
-  requiredMethods.forEach(method => (Impl.prototype[method] = () => {}));
+  requiredMethods.forEach((method) => { Impl.prototype[method] = () => {}; });
 
   return Impl;
 };

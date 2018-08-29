@@ -78,11 +78,11 @@ module.exports = class Reinforce extends Agent {
 
     // compute returns at s_0
     this.history.forEach(({ reward }, time) => {
-      returns[0] += gamma ** time * reward;
+      returns[0] += (gamma ** time) * reward;
     });
 
     // compute rest in linear time
-    for (let t = 0; t < this.history.length - 1; t++) {
+    for (let t = 0; t < this.history.length - 1; t += 1) {
       returns[t + 1] = (returns[t] - this.history[t].reward) / gamma;
     }
 
