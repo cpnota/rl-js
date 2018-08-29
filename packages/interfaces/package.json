@@ -1,0 +1,30 @@
+{
+  "name": "@rl-js/interfaces",
+  "version": "0.0.1-alpha.0",
+  "description": "Core interfaces for rl-js: Reinforcement Learning in JavaScript",
+  "homepage": "https://github.com/cpnota/rl-js-interfaces",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cpnota/rl-js-interfaces/issues"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cpnota/rl-js-interfaces.git"
+  },
+  "scripts": {
+    "coverage": "jest --coverage",
+    "doc": "./node_modules/.bin/jsdoc2md **/*.js > README.md",
+    "lint": "eslint .*.js *.js **/*.js",
+    "format": "npm run lint -- --fix",
+    "prepublishOnly": "npm run format && npm run test && npm run doc",
+    "test": "jest",
+    "watch": "jest --watch"
+  },
+  "dependencies": {
+    "check-interface": "^1.0.1"
+  },
+  "gitHead": "ea512cef51fb6ce6c609d16c5a19d0ded4d42c9e"
+}
