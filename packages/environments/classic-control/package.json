@@ -1,6 +1,6 @@
 {
   "name": "@rl-js/environments-classic-control",
-  "version": "0.0.0",
+  "version": "0.0.3",
   "description": "Classic control environments for rl-js: Reinforcement Learning in JavaScript",
   "homepage": "https://github.com/cpnota/@rl-js/environments-classic-control-suites#readme",
   "license": "MIT",
