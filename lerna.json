@@ -1,9 +1,9 @@
 {
   "packages": [
     "packages/*",
+    "packages/apps/*",
     "packages/baselines/*",
-    "packages/environments/*",
-    "packages/apps/*"
+    "packages/environments/*"
   ],
-  "version": "0.4.1"
+  "version": "0.5.0"
 }
