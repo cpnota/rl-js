@@ -1,0 +1,28 @@
+{
+  "name": "@rl-js/baseline-agents",
+  "version": "0.0.0",
+  "description": "Reinforcement learning agents in JavaScript",
+  "homepage": "https://github.com/cpnota/rl-js#readme",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cpnota/rl-js/issues"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cpnota/rl-js.git"
+  },
+  "dependencies": {
+    "@rl-js/interfaces": "^1.7.0",
+    "check-interface": "^1.1.1",
+    "check-types": "^7.4.0",
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2",
+    "mathjs": "^5.0.4"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
