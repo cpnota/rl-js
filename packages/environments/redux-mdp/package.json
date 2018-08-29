@@ -1,0 +1,31 @@
+{
+  "name": "@rl-js/redux-mdp",
+  "version": "0.0.1-alpha.0",
+  "description": "An interface for buildings MDPs using Redux, compatible with the rl-js framework.",
+  "homepage": "https://github.com/cpnota/redux-mdp",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cpnota/redux-mdp/issues"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cpnota/redux-mdp.git"
+  },
+  "scripts": {
+    "coverage": "jest --coverage",
+    "doc": "./node_modules/.bin/jsdoc2md *.js > README.md",
+    "lint": "eslint .*.js *.js **/*.js",
+    "format": "npm run lint -- --fix",
+    "prepublishOnly": "npm run format && npm run test && npm run doc",
+    "test": "jest",
+    "watch": "jest --watch"
+  },
+  "dependencies": {
+    "@rl-js/interfaces": "^0.0.1-alpha.0",
+    "redux": "^4.0.0"
+  },
+  "gitHead": "ea512cef51fb6ce6c609d16c5a19d0ded4d42c9e"
+}
