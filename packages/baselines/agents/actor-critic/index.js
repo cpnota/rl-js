@@ -3,10 +3,10 @@ const {
   StateTraces,
   StateValueFunction,
   Policy,
-  PolicyTraces
-} = require('@rl-js/interfaces')
-const checkInterface = require('check-interface')
-const check = require('check-types')
+  PolicyTraces,
+} = require('@rl-js/interfaces');
+const checkInterface = require('check-interface');
+const check = require('check-types');
 
 module.exports = class ActorCritic extends Agent {
   constructor({
@@ -15,59 +15,59 @@ module.exports = class ActorCritic extends Agent {
     stochasticPolicy,
     policyTraces,
     lambda,
-    gamma = 1
+    gamma = 1,
   }) {
-    super()
+    super();
     this.stateValueFunction = checkInterface(
       stateValueFunction,
-      StateValueFunction
-    )
-    this.stateTraces = checkInterface(stateTraces, StateTraces)
-    this.stochasticPolicy = checkInterface(stochasticPolicy, Policy)
-    this.policyTraces = checkInterface(policyTraces, PolicyTraces)
-    this.lambda = check.assert.number(lambda)
-    this.gamma = check.assert.number(gamma)
+      StateValueFunction,
+    );
+    this.stateTraces = checkInterface(stateTraces, StateTraces);
+    this.stochasticPolicy = checkInterface(stochasticPolicy, Policy);
+    this.policyTraces = checkInterface(policyTraces, PolicyTraces);
+    this.lambda = check.assert.number(lambda);
+    this.gamma = check.assert.number(gamma);
   }
 
   newEpisode(environment) {
-    this.environment = environment
-    this.state = environment.getObservation()
-    this.stateTraces.reset()
-    this.policyTraces.reset()
+    this.environment = environment;
+    this.state = environment.getObservation();
+    this.stateTraces.reset();
+    this.policyTraces.reset();
   }
 
   act() {
-    this.action = this.stochasticPolicy.chooseAction(this.state)
-    this.environment.dispatch(this.action)
-    this.nextState = this.environment.getObservation()
-    this.update()
-    this.state = this.nextState
+    this.action = this.stochasticPolicy.chooseAction(this.state);
+    this.environment.dispatch(this.action);
+    this.nextState = this.environment.getObservation();
+    this.update();
+    this.state = this.nextState;
   }
 
   update() {
-    const tdError = this.getTdError()
+    const tdError = this.getTdError();
 
-    this.stateTraces.record(this.state)
-    this.stateTraces.update(tdError)
-    this.stateTraces.decay(this.lambda * this.getGamma())
+    this.stateTraces.record(this.state);
+    this.stateTraces.update(tdError);
+    this.stateTraces.decay(this.lambda * this.getGamma());
 
-    this.policyTraces.record(this.state, this.action)
-    this.policyTraces.update(tdError)
-    this.policyTraces.decay(this.lambda * this.getGamma())
+    this.policyTraces.record(this.state, this.action);
+    this.policyTraces.update(tdError);
+    this.policyTraces.decay(this.lambda * this.getGamma());
   }
 
   getTdError() {
     const nextEstimate = this.environment.isTerminated()
       ? 0
-      : this.getGamma() * this.stateValueFunction.call(this.nextState)
+      : this.getGamma() * this.stateValueFunction.call(this.nextState);
     return (
-      this.environment.getReward() +
-      nextEstimate -
-      this.stateValueFunction.call(this.state)
-    )
+      this.environment.getReward()
+      + nextEstimate
+      - this.stateValueFunction.call(this.state)
+    );
   }
 
   getGamma() {
-    return this.gamma
+    return this.gamma;
   }
-}
+};

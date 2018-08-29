@@ -3,23 +3,22 @@ const {
   PolicyTraces,
   Policy,
   Environment,
-  StateTraces
-} = require('../__mocks__/')
-const ActorCritic = require('./')
+  StateTraces,
+} = require('../__mocks__/');
+const ActorCritic = require('./');
 
 describe('constructor', () => {
   test('constructs object', () => {
     expect(
-      () =>
-        new ActorCritic({
-          stateValueFunction: new StateValueFunction(),
-          stateTraces: new StateTraces(),
-          stochasticPolicy: new Policy(),
-          policyTraces: new PolicyTraces(),
-          lambda: 0.5
-        })
-    ).not.toThrow()
-  })
+      () => new ActorCritic({
+        stateValueFunction: new StateValueFunction(),
+        stateTraces: new StateTraces(),
+        stochasticPolicy: new Policy(),
+        policyTraces: new PolicyTraces(),
+        lambda: 0.5,
+      }),
+    ).not.toThrow();
+  });
 
   const argNames = [
     'stateValueFunction',
@@ -27,10 +26,10 @@ describe('constructor', () => {
     'stochasticPolicy',
     'policyTraces',
     'lambda',
-    'gamma'
-  ]
+    'gamma',
+  ];
 
-  argNames.forEach(arg => {
+  argNames.forEach((arg) => {
     test(`throws error if ${arg} is not defined`, () => {
       const args = {
         stateValueFunction: new StateValueFunction(),
@@ -38,50 +37,50 @@ describe('constructor', () => {
         stochasticPolicy: new Policy(),
         policyTraces: new PolicyTraces(),
         lambda: 0.5,
-        gamma: 1
-      }
-      args[arg] = null
-      expect(() => new ActorCritic(args)).toThrow(TypeError)
-    })
-  })
-})
+        gamma: 1,
+      };
+      args[arg] = null;
+      expect(() => new ActorCritic(args)).toThrow(TypeError);
+    });
+  });
+});
 
 const initialize = () => {
-  const stateValueFunction = new StateValueFunction()
-  const stateTraces = new StateTraces()
-  const stochasticPolicy = new Policy()
-  const policyTraces = new PolicyTraces()
-  const lambda = 0.5
+  const stateValueFunction = new StateValueFunction();
+  const stateTraces = new StateTraces();
+  const stochasticPolicy = new Policy();
+  const policyTraces = new PolicyTraces();
+  const lambda = 0.5;
 
   const agent = new ActorCritic({
     stateValueFunction,
     stateTraces,
     stochasticPolicy,
     policyTraces,
-    lambda
-  })
+    lambda,
+  });
 
-  const environment = new Environment()
+  const environment = new Environment();
 
   environment.getObservation
     .mockReturnValue(undefined)
     .mockReturnValueOnce('state1')
-    .mockReturnValueOnce('state2')
+    .mockReturnValueOnce('state2');
 
-  environment.getReward.mockReturnValue(10)
+  environment.getReward.mockReturnValue(10);
 
-  environment.isTerminated.mockReturnValue(true).mockReturnValueOnce(false)
+  environment.isTerminated.mockReturnValue(true).mockReturnValueOnce(false);
 
   stochasticPolicy.chooseAction
     .mockReturnValue(undefined)
     .mockReturnValueOnce('action1')
-    .mockReturnValueOnce('action2')
+    .mockReturnValueOnce('action2');
 
-  stateValueFunction.call.mockImplementation(state => {
-    if (state === 'state1') return 1
-    if (state === 'state2') return 2
-    throw new Error('Unknown state')
-  })
+  stateValueFunction.call.mockImplementation((state) => {
+    if (state === 'state1') return 1;
+    if (state === 'state2') return 2;
+    throw new Error('Unknown state');
+  });
 
   return {
     agent,
@@ -90,44 +89,50 @@ const initialize = () => {
     stochasticPolicy,
     policyTraces,
     environment,
-    lambda
-  }
-}
+    lambda,
+  };
+};
 
 test('newEpisode', () => {
-  const { agent, policyTraces, stateTraces, environment } = initialize()
-  agent.newEpisode(environment)
-  expect(stateTraces.reset).toHaveBeenCalled()
-  expect(policyTraces.reset).toHaveBeenCalled()
-})
+  const {
+    agent, policyTraces, stateTraces, environment,
+  } = initialize();
+  agent.newEpisode(environment);
+  expect(stateTraces.reset).toHaveBeenCalled();
+  expect(policyTraces.reset).toHaveBeenCalled();
+});
 
 test('act', () => {
-  const { agent, policyTraces, stateTraces, environment, lambda } = initialize()
+  const {
+    agent, policyTraces, stateTraces, environment, lambda,
+  } = initialize();
 
-  agent.newEpisode(environment)
-  agent.act()
+  agent.newEpisode(environment);
+  agent.act();
 
-  expect(environment.dispatch).lastCalledWith('action1')
-  expect(stateTraces.record).lastCalledWith('state1')
-  expect(stateTraces.update).lastCalledWith(11)
-  expect(stateTraces.decay).lastCalledWith(lambda)
-  expect(policyTraces.record).lastCalledWith('state1', 'action1')
-  expect(policyTraces.update).lastCalledWith(11)
-  expect(policyTraces.decay).lastCalledWith(lambda)
-})
+  expect(environment.dispatch).lastCalledWith('action1');
+  expect(stateTraces.record).lastCalledWith('state1');
+  expect(stateTraces.update).lastCalledWith(11);
+  expect(stateTraces.decay).lastCalledWith(lambda);
+  expect(policyTraces.record).lastCalledWith('state1', 'action1');
+  expect(policyTraces.update).lastCalledWith(11);
+  expect(policyTraces.decay).lastCalledWith(lambda);
+});
 
 test('terminal state', () => {
-  const { agent, policyTraces, stateTraces, environment, lambda } = initialize()
+  const {
+    agent, policyTraces, stateTraces, environment, lambda,
+  } = initialize();
 
-  agent.newEpisode(environment)
-  agent.act()
-  agent.act()
+  agent.newEpisode(environment);
+  agent.act();
+  agent.act();
 
-  expect(environment.dispatch).lastCalledWith('action2')
-  expect(stateTraces.record).lastCalledWith('state2')
-  expect(stateTraces.update).lastCalledWith(8)
-  expect(stateTraces.decay).lastCalledWith(lambda)
-  expect(policyTraces.record).lastCalledWith('state2', 'action2')
-  expect(policyTraces.update).lastCalledWith(8)
-  expect(policyTraces.decay).lastCalledWith(lambda)
-})
+  expect(environment.dispatch).lastCalledWith('action2');
+  expect(stateTraces.record).lastCalledWith('state2');
+  expect(stateTraces.update).lastCalledWith(8);
+  expect(stateTraces.decay).lastCalledWith(lambda);
+  expect(policyTraces.record).lastCalledWith('state2', 'action2');
+  expect(policyTraces.update).lastCalledWith(8);
+  expect(policyTraces.decay).lastCalledWith(lambda);
+});
