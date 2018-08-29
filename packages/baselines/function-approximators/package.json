@@ -1,0 +1,24 @@
+{
+  "name": "@rl-js/baseline-function-approximators",
+  "version": "0.0.0",
+  "description": "Reinforcement learning function approximators in JavaScript",
+  "homepage": "https://github.com/cpnota/rl-js#readme",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cpnota/rl-js/issues"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cpnota/rl-js.git"
+  },
+  "dependencies": {
+    "@rl-js/interfaces": "^0.0.5",
+    "check-interface": "^1.1.1",
+    "js-combinatorics": "^0.5.3",
+    "lodash.mapvalues": "^4.6.0",
+    "mathjs": "^3.20.1"
+  }
+}
