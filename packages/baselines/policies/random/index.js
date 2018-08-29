@@ -1,5 +1,7 @@
 const Policy = require('@rl-js/interfaces/policy');
+const math = require('mathjs');
 
+/* eslint-disable no-unused-vars */
 class Random extends Policy {
   constructor({ actions }) {
     super();
@@ -19,7 +21,7 @@ class Random extends Policy {
   }
 
   chooseRandomAction() {
-    return random(Object.values(this.actions));
+    return math.pickRandom(Object.values(this.actions));
   }
 
   update(state, action, error) {
@@ -46,7 +48,5 @@ class Random extends Policy {
     return this;
   }
 }
-
-const random = arr => arr[Math.floor(Math.random() * arr.length)];
 
 module.exports = Random;

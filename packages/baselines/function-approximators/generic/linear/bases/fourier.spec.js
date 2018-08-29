@@ -84,7 +84,7 @@ test('correct number of terms', () => {
       });
 
       expect(basis.c.length).toEqual((order + 1) ** variables);
-      expect(basis.terms).toEqual((2 * (order + 1)) ** variables);
+      expect(basis.terms).toEqual(2 * ((order + 1) ** variables));
     }
   }
 });

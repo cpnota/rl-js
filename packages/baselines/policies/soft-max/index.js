@@ -21,7 +21,7 @@ class SoftMax extends Policy {
     const selection = Math.random();
 
     let sum = 0;
-    for (const i in probabilities) {
+    for (let i = 0; i < probabilities.length; i += 1) {
       const next = sum + probabilities[i];
       if (selection > sum && selection < next) return this.actions[i];
       sum = next;
