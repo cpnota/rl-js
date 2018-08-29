@@ -19,5 +19,12 @@
     "prepublishOnly": "npm run format && npm run test",
     "test": "jest",
     "watch": "jest --watch"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/build/",
+      "/react/"
+    ]
   }
 }

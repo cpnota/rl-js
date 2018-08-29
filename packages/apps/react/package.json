@@ -1,0 +1,43 @@
+{
+  "name": "@rl-js/react-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@rl-js/baseline-agent-suites": "^0.4.0",
+    "@rl-js/configuration": "^0.4.0",
+    "@rl-js/environments-classic-control": "^0.4.0",
+    "js-combinatorics": "^0.5.3",
+    "lodash": "^4.17.10",
+    "mathjs": "^5.0.4",
+    "plotly.js": "^1.39.4",
+    "prop-types": "^15.6.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-plotly.js": "^2.2.0",
+    "react-redux": "^5.0.7",
+    "react-scripts": "1.1.4",
+    "redux": "^4.0.0",
+    "redux-saga": "^0.16.0",
+    "semantic-ui-css": "^2.3.3",
+    "semantic-ui-react": "^0.82.2",
+    "uuid": "^3.3.2",
+    "workerize-loader": "^1.0.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public",
+    "lint": "eslint src/** --fix"
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "^3.4.10",
+    "@storybook/addon-links": "^3.4.10",
+    "@storybook/addons": "^3.4.10",
+    "@storybook/react": "^3.4.10",
+    "babel-core": "^6.26.3",
+    "babel-runtime": "^6.26.0"
+  }
+}
