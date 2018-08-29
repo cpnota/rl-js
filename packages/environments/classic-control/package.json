@@ -1,0 +1,25 @@
+{
+  "name": "@rl-js/environments-classic-control",
+  "version": "0.0.4",
+  "description": "Classic Control reinforcement learning environments in JavaScript",
+  "homepage": "https://github.com/cpnota/rl-js",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cpnota/rl-js/issues"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cpnota/rl-js.git"
+  },
+  "dependencies": {
+    "@rl-js/configuration": "^1.0.0",
+    "@rl-js/redux-mdp": "^0.0.4",
+    "@rl-js/interfaces": "^0.0.4",
+    "lodash.get": "^4.4.2",
+    "mathjs": "^3.20.2",
+    "redux": "^3.7.2"
+  }
+}
