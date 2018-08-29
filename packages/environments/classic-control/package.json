@@ -21,5 +21,6 @@
     "lodash.get": "^4.4.2",
     "mathjs": "^3.20.2",
     "redux": "^3.7.2"
-  }
+  },
+  "gitHead": "28d5dccbddb0eaf510c5a9a3d0f3919f9454bdee"
 }

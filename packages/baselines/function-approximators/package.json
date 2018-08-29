@@ -20,5 +20,6 @@
     "js-combinatorics": "^0.5.3",
     "lodash.mapvalues": "^4.6.0",
     "mathjs": "^3.20.1"
-  }
+  },
+  "gitHead": "28d5dccbddb0eaf510c5a9a3d0f3919f9454bdee"
 }

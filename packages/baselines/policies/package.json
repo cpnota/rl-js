@@ -18,5 +18,6 @@
     "@rl-js/interfaces": "^0.4.0",
     "gaussian": "^1.1.0",
     "mathjs": "^3.20.2"
-  }
+  },
+  "gitHead": "28d5dccbddb0eaf510c5a9a3d0f3919f9454bdee"
 }
