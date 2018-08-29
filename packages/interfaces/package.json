@@ -14,15 +14,6 @@
     "type": "git",
     "url": "git+https://github.com/cpnota/rl-js-interfaces.git"
   },
-  "scripts": {
-    "coverage": "jest --coverage",
-    "doc": "./node_modules/.bin/jsdoc2md **/*.js > README.md",
-    "lint": "eslint .*.js *.js **/*.js",
-    "format": "npm run lint -- --fix",
-    "prepublishOnly": "npm run format && npm run test && npm run doc",
-    "test": "jest",
-    "watch": "jest --watch"
-  },
   "dependencies": {
     "check-interface": "^1.0.1"
   },
