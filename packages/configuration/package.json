@@ -1,6 +1,6 @@
 {
   "name": "@rl-js/configuration",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Configuration utilities for rl-js: Reinforcement Learning in JavaScript",
   "homepage": "https://github.com/cpnota/rl-js#readme",
   "license": "MIT",
@@ -15,7 +15,7 @@
     "url": "git+https://github.com/cpnota/rl-js.git"
   },
   "dependencies": {
-    "@rl-js/interfaces": "^0.5.0",
+    "@rl-js/interfaces": "^0.5.1",
     "check-interface": "^1.1.1",
     "mathjs": "^5.1.1"
   },
