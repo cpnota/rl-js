@@ -2,7 +2,8 @@
   "packages": [
     "packages/*",
     "packages/baselines/*",
-    "packages/environments/*"
+    "packages/environments/*",
+    "packages/apps/*"
   ],
   "version": "0.4.1"
 }
