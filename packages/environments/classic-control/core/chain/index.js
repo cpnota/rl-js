@@ -7,6 +7,7 @@ const actions = require('./types');
 
 const layout = [['s', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'g']];
 
+/* eslint-disable class-methods-use-this */
 class ChainFactory extends DiscreteEnvironmentFactory {
   constructor() {
     super();

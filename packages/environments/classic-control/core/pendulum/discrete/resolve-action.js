@@ -1,4 +1,3 @@
-const types = require('./types');
 const continuousTypes = require('../types');
 
 const torque = action => Number(action);

@@ -1,1 +1,1 @@
-module.exports = layout => state => `${state.x}-${state.y}`;
+module.exports = () => state => `${state.x}-${state.y}`;

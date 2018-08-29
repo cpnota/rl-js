@@ -1,6 +1,6 @@
 // function approximator version
 const factory = require('../factory');
-const getState = require('../factory/discrete');
+const getState = require('../factory/get-state/discrete');
 const { g, s } = require('../factory/features');
 
 /* eslint-disable prettier/prettier */

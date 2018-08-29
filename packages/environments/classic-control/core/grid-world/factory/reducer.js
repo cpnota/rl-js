@@ -1,4 +1,4 @@
-const _get = require('lodash.get');
+const get = require('lodash.get');
 const types = require('../types');
 const { s } = require('./features');
 
@@ -16,7 +16,7 @@ module.exports = (layout) => {
     }
   }));
 
-  const canMoveTo = next => _get(layout, [next.y, next.x]) != null;
+  const canMoveTo = next => get(layout, [next.y, next.x]) != null;
 
   return (state = initialState, action) => {
     const { x, y } = state;

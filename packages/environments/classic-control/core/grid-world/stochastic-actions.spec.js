@@ -3,8 +3,8 @@ const configureResolveActions = require('./stochastic-actions');
 const test = (resolve, action, probabilities) => {
   const results = {};
   const trials = 10000;
-  for (let i = 0; i < trials; i++) {
-    const type = resolve(null, action).type;
+  for (let i = 0; i < trials; i += 1) {
+    const { type } = resolve(null, action);
     results[type] = (results[type] || 0) + 1;
   }
   Object.entries(probabilities).forEach(([key, value]) => {

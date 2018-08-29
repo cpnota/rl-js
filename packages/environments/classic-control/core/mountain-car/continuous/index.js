@@ -13,7 +13,9 @@ class MountainCarFactory extends MdpFactory {
         resolveAction,
         getObservation: getState,
         computeReward: () => -1,
-        isTerminated: (state, action, nextState, time) => nextState.position >= 0.5 || time >= 20000,
+        isTerminated: (state, action, nextState, time) => (
+          nextState.position >= 0.5 || time >= 20000
+        ),
       }),
     );
   }
