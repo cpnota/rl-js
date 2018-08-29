@@ -1,7 +1,8 @@
 {
   "packages": [
     "packages/*",
-    "packages/environments/*"
+    "packages/environments/*",
+    "packages/baselines/*"
   ],
   "version": "0.0.5"
 }
