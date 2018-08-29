@@ -8,7 +8,7 @@ class PolynomialBasis {
     if (order >= 10) throw new Error('Maximum order is 9');
     this.variables = variables;
     this.order = order;
-    this.terms = Math.pow(this.order + 1, this.variables);
+    this.terms = (this.order + 1) ** this.variables;
     this.c = this.computeC();
 
     this.cache = new Cache();

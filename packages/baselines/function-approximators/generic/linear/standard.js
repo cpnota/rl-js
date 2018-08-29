@@ -18,7 +18,7 @@ class LinearFunctionApproximator extends FunctionApproximator {
 
   call(args) {
     const result = math.dot(this.weights, this.basis.features(args));
-    if (isNaN(result)) {
+    if (Number.isIntegerisNaN(result)) {
       throw new Error(
         `Result was not a number! ${JSON.stringify({
           args,

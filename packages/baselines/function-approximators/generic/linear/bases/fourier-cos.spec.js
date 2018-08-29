@@ -72,8 +72,8 @@ describe('c', () => {
   });
 
   test('correct number of terms', () => {
-    for (let order = 1; order < 4; order++) {
-      for (let variables = 1; variables < 4; variables++) {
+    for (let order = 1; order < 4; order += 1) {
+      for (let variables = 1; variables < 4; variables += 1) {
         const basis = new FourierBasis({
           order,
           variables,

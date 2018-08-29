@@ -16,7 +16,7 @@ class TabularFunctionApproximator extends FunctionApproximator {
   }
 
   update(args, error) {
-    if (isNaN(error)) throw new Error('Error was NaN');
+    if (Number.isNaN(error)) throw new Error('Error was NaN');
     const currentValue = this.call(args);
     this.values.set(args, currentValue + this.alpha * error);
     return this;
@@ -24,9 +24,9 @@ class TabularFunctionApproximator extends FunctionApproximator {
 
   gradient(args) {
     const gradient = [];
-    for (const s of this.values.keys()) {
-      s === args ? gradient.push(1) : gradient.push(0);
-    }
+    this.values.forEach((value, key) => (
+      gradient.push(key === args ? 1 : 0)
+    ));
     return gradient;
   }
 
@@ -47,21 +47,6 @@ class TabularFunctionApproximator extends FunctionApproximator {
       this.values.set(key, value + this.alpha * e);
     });
     return this;
-  }
-
-  getNumberOfWeights() {
-    return this.values.size;
-  }
-
-  updateWeights(errors) {
-    const e = errors.slice().reverse();
-    for (const s of this.values.keys()) {
-      this.update(s, e.pop());
-    }
-  }
-
-  createTraces() {
-    return new Traces(this);
   }
 }
 

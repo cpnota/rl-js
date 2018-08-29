@@ -18,7 +18,7 @@ test('chooses actions from a gaussian distribution', () => {
   });
 
   const actions = [];
-  for (let i = 0; i < 10000; i++) actions.push(policy.chooseAction('state'));
+  for (let i = 0; i < 10000; i += 1) actions.push(policy.chooseAction('state'));
   expect(math.mean(actions)).toBeCloseTo(1, 1);
   expect(math.std(actions)).toBeCloseTo(1, 1);
 });
