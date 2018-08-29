@@ -1,4 +1,4 @@
-const checkInterface = require('check-interface')
+const checkInterface = require('check-interface');
 
 /**
  * Interface for linear function approximator Basis.
@@ -6,7 +6,7 @@ const checkInterface = require('check-interface')
  */
 class Basis {
   constructor() {
-    checkInterface(this, Basis)
+    checkInterface(this, Basis);
   }
 
   /**
@@ -20,4 +20,4 @@ class Basis {
   getNumberOfFeatures() {}
 }
 
-module.exports = Basis
+module.exports = Basis;

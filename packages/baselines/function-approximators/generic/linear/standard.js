@@ -1,60 +1,60 @@
-const checkInterface = require('check-interface')
-const FunctionApproximator = require('@rl-js/interfaces/function-approximator')
-const Basis = require('./basis')
-const math = require('mathjs')
+const checkInterface = require('check-interface');
+const FunctionApproximator = require('@rl-js/interfaces/function-approximator');
+const math = require('mathjs');
+const Basis = require('./basis');
 
 class LinearFunctionApproximator extends FunctionApproximator {
   constructor({ alpha, basis, initialWeights = undefined }) {
-    super()
+    super();
 
-    checkInterface(basis, Basis)
-    this.basis = basis
-    this.alpha = alpha
-    this.weights = initialWeights || Array(basis.getNumberOfFeatures()).fill(0)
+    checkInterface(basis, Basis);
+    this.basis = basis;
+    this.alpha = alpha;
+    this.weights = initialWeights || Array(basis.getNumberOfFeatures()).fill(0);
     if (this.weights.length !== basis.getNumberOfFeatures()) {
-      throw new Error('Number of terms for basis must match number of weights')
+      throw new Error('Number of terms for basis must match number of weights');
     }
   }
 
   call(args) {
-    const result = math.dot(this.weights, this.basis.features(args))
+    const result = math.dot(this.weights, this.basis.features(args));
     if (isNaN(result)) {
       throw new Error(
         `Result was not a number! ${JSON.stringify({
           args,
-          result
-        })} `
-      )
+          result,
+        })} `,
+      );
     }
-    return result
+    return result;
   }
 
   update(args, error) {
     this.weights = math.add(
       this.weights,
-      math.multiply(this.alpha, error, this.basis.features(args))
-    )
-    return this
+      math.multiply(this.alpha, error, this.basis.features(args)),
+    );
+    return this;
   }
 
   gradient(args) {
-    return this.basis.features(args)
+    return this.basis.features(args);
   }
 
   getParameters() {
-    return this.weights
+    return this.weights;
   }
 
   setParameters(parameters) {
-    if (parameters == null) throw new Error('Parameters are undefined')
-    this.weights = parameters
-    return this
+    if (parameters == null) throw new Error('Parameters are undefined');
+    this.weights = parameters;
+    return this;
   }
 
   updateParameters(errors) {
-    this.weights = math.add(this.weights, math.multiply(this.alpha, errors))
-    return this
+    this.weights = math.add(this.weights, math.multiply(this.alpha, errors));
+    return this;
   }
 }
 
-module.exports = LinearFunctionApproximator
+module.exports = LinearFunctionApproximator;
