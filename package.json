@@ -1,5 +1,5 @@
 {
-  "name": "@rl-js/root",
+  "name": "root",
   "private": true,
   "devDependencies": {
     "babel-eslint": "^8.2.6",
@@ -13,6 +13,11 @@
     "lerna": "^3.2.1"
   },
   "scripts": {
-    "lint": "eslint **/*.js --fix"
+    "coverage": "jest --coverage",
+    "lint": "eslint **/*.js",
+    "format": "npm run lint -- --fix",
+    "prepublishOnly": "npm run format && npm run test",
+    "test": "jest",
+    "watch": "jest --watch"
   }
 }
