@@ -1,3 +1,5 @@
+const normalize = (min, max, value) => (value - min) / (max - min);
+
 module.exports = ({
   x, velocity, theta, angularVelocity,
 }) => [
@@ -6,5 +8,3 @@ module.exports = ({
   normalize(-10, 10, velocity),
   normalize(-Math.PI, Math.PI, angularVelocity),
 ];
-
-const normalize = (min, max, value) => (value - min) / (max - min);

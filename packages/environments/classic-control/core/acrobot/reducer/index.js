@@ -2,6 +2,16 @@ const math = require('mathjs');
 const rungeKutta4 = require('./runge-kutta-4');
 const configureDynamics = require('./dynamics');
 
+const wrap = (min, max) => (x) => {
+  let result = x;
+  const diff = max - min;
+  while (result > max) result -= diff;
+  while (result < min) result += diff;
+  return result;
+};
+
+const bound = (min, max) => x => Math.min(Math.max(x, min), max);
+
 module.exports = (params) => {
   const { dt } = params;
   const dynamics = configureDynamics(params);
@@ -32,12 +42,3 @@ module.exports = (params) => {
     return state;
   };
 };
-
-const wrap = (min, max) => (x) => {
-  const diff = max - min;
-  while (x > max) x -= diff;
-  while (x < min) x += diff;
-  return x;
-};
-
-const bound = (min, max) => x => Math.min(Math.max(x, min), max);

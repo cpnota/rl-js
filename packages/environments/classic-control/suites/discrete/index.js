@@ -2,11 +2,11 @@ const EnvironmentSuite = require('@rl-js/configuration/environment-suite');
 const EnvironmentBuilder = require('@rl-js/configuration/environment-builder');
 const DiscreteEnvironmentFactory = require('@rl-js/configuration/environment-types/discrete');
 
-const AcrobotFactory = require('@rl-js/environments-classic-control-core/acrobot');
-const CartPoleFactory = require('@rl-js/environments-classic-control-core/cart-pole');
-const GridWorldFactory = require('@rl-js/environments-classic-control-core/grid-world/5x5/discrete');
-const MountainCarFactory = require('@rl-js/environments-classic-control-core/mountain-car');
-const PendulumFactory = require('@rl-js/environments-classic-control-core/pendulum/discrete');
+const AcrobotFactory = require('../../core/acrobot');
+const CartPoleFactory = require('../../core/cart-pole');
+const GridWorldFactory = require('../../core/grid-world/5x5/discrete');
+const MountainCarFactory = require('../../core/mountain-car');
+const PendulumFactory = require('../../core/pendulum/discrete');
 
 module.exports = new EnvironmentSuite({
   name: 'Classic Control (Discrete)',
