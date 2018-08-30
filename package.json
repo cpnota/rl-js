@@ -16,7 +16,7 @@
     "coverage": "jest --coverage",
     "lint": "eslint **/*.js",
     "format": "npm run lint -- --fix",
-    "prepublishOnly": "npm run format && npm run test",
+    "validate": "npm run format && npm run test",
     "test": "jest",
     "watch": "jest --watch"
   },
