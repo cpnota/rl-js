@@ -14,7 +14,6 @@
       "class-methods-use-this": "off",
       "global-require": "off",
       "jsx-a11y/label-has-associated-control": "off",
-      "import/prefer-default-export": "off",
-      "react/jsx-filename-extension": "off"
+      "import/prefer-default-export": "off"
   }
 }

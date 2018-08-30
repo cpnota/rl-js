@@ -5,6 +5,8 @@ import configureStore from './configure-store';
 import Root from './components/root';
 import './index.css';
 
+/* eslint-disable react/jsx-filename-extension */
+/* Must be disabled for bitsrc to find the file. */
 export default class App extends React.Component {
   constructor(props) {
     super(props);
