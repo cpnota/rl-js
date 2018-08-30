@@ -19,7 +19,8 @@ const HyperparameterSelection = ({
         .getAgentSuite(agent.suite)
         .getAgentBuilder(agent.id)
         .getHyperparameterDefinitions()
-        .map(definition => ({ name: definition.getName(), defaultValue: definition.defaultValue() }))
+        .map(definition => (
+          { name: definition.getName(), defaultValue: definition.defaultValue() }))
         .map(({ name, defaultValue }) => (
           <Form.Field key={name}>
             <label htmlFor={name}>

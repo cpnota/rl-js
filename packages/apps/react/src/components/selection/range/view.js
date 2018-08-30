@@ -18,8 +18,15 @@ const RangeSelection = ({
           <label htmlFor={definition.getName()}>
             {definition.getName()}
             <br />
-            <Checkbox toggle checked={!isFixed} onChange={() => setIsFixed(definition.getName(), !isFixed)} />
-            <Definition definition={isFixed ? fixed : definition} setDefinition={isFixed ? setFixed : setDefinition} />
+            <Checkbox
+              toggle
+              checked={!isFixed}
+              onChange={() => setIsFixed(definition.getName(), !isFixed)}
+            />
+            <Definition
+              definition={isFixed ? fixed : definition}
+              setDefinition={isFixed ? setFixed : setDefinition}
+            />
           </label>
         </Form.Field>
       ))

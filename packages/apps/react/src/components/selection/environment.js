@@ -1,10 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import configuration from '@rl-js/configuration';
 import _flatten from 'lodash/flatten';
 import { Dropdown } from 'semantic-ui-react';
 
 const handleChange = onChange => (event, data) => onChange(JSON.parse(data.value));
-const equal = (environment, _environment) => environment && (environment.suite === _environment.suite) && (environment.id === _environment.id);
+const equal = (environment, _environment) => (
+  environment && (environment.suite === _environment.suite) && (environment.id === _environment.id)
+);
 
 const EnvironmentSelection = ({ environmentType, environment, onChange }) => (
   <Dropdown placeholder="Select Environment" text="Select Environment">
@@ -30,5 +33,11 @@ const EnvironmentSelection = ({ environmentType, environment, onChange }) => (
     </Dropdown.Menu>
   </Dropdown>
 );
+
+EnvironmentSelection.propTypes = {
+  environmentType: PropTypes.func.isRequired,
+  environment: PropTypes.shape({ suite: PropTypes.string, id: PropTypes.string }).isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
 export default EnvironmentSelection;
