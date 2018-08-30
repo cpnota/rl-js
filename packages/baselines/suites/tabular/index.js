@@ -6,6 +6,7 @@ module.exports = new AgentSuite({
   id: 'baseline-tabular',
   builders: [
     require('./sarsa'),
+    require('./q-learning'),
   ],
   environmentType: TabularEnvironment,
 });
