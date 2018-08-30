@@ -21,8 +21,20 @@ const LinearDefinition = ({ definition, setDefinition }) => {
 
   return (
     <Grid.Row>
-      <Input style={{ ...style, marginRight: '1em' }} label="min" id={definition.getName()} defaultValue={definition.min} onChange={onMinChange} />
-      <Input style={style} label="max" id={definition.getName()} defaultValue={definition.max} onChange={onMaxChange} />
+      <Input
+        style={{ ...style, marginRight: '1em' }}
+        label="min"
+        id={definition.getName()}
+        defaultValue={definition.min}
+        onChange={onMinChange}
+      />
+      <Input
+        style={style}
+        label="max"
+        id={definition.getName()}
+        defaultValue={definition.max}
+        onChange={onMaxChange}
+      />
     </Grid.Row>
   );
 };

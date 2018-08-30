@@ -26,17 +26,41 @@ const ExponentialDefinition = ({ definition, setDefinition }) => {
     base,
     default: definition.defaultValue(),
   }));
-  const onMinChange = (e, { value }) => onChange(parseInput(value), definition.max, definition.base);
-  const onMaxChange = (e, { value }) => onChange(definition.min, parseInput(value), definition.base);
-  const onBaseChange = (e, { value }) => onChange(definition.min, definition.max, parseInput(value));
+  const onMinChange = (e, { value }) => (
+    onChange(parseInput(value), definition.max, definition.base)
+  );
+  const onMaxChange = (e, { value }) => (
+    onChange(definition.min, parseInput(value), definition.base)
+  );
+  const onBaseChange = (e, { value }) => (
+    onChange(definition.min, definition.max, parseInput(value))
+  );
 
   return (
     <div>
       <Grid.Row>
-        <Input style={styles.left} label="min" id={definition.getName()} defaultValue={definition.min} onChange={onMinChange} />
-        <Input style={styles.right} label="max" id={definition.getName()} defaultValue={definition.max} onChange={onMaxChange} />
+        <Input
+          style={styles.left}
+          label="min"
+          id={definition.getName()}
+          defaultValue={definition.min}
+          onChange={onMinChange}
+        />
+        <Input
+          style={styles.right}
+          label="max"
+          id={definition.getName()}
+          defaultValue={definition.max}
+          onChange={onMaxChange}
+        />
       </Grid.Row>
-      <Input style={styles.base} label="base" id={definition.getName()} defaultValue={definition.base} onChange={onBaseChange} />
+      <Input
+        style={styles.base}
+        label="base"
+        id={definition.getName()}
+        defaultValue={definition.base}
+        onChange={onBaseChange}
+      />
     </div>
   );
 };

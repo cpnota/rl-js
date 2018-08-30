@@ -37,7 +37,13 @@
     "@storybook/addons": "^3.4.10",
     "@storybook/react": "^3.4.10",
     "babel-core": "^6.26.3",
-    "babel-runtime": "^6.26.0"
+    "babel-runtime": "^6.26.0",
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^21.22.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.11.1"
   },
   "gitHead": "031441baa186d871d0e7af05c914b1a70dcc80a6"
 }

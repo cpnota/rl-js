@@ -21,7 +21,8 @@ const forHyperparameter = (state = defaultResult, action) => {
     case types.RECORD_TRIAL:
       return {
         ...state,
-        mean: ((state.mean || 0) * (state.count) + math.mean(action.payload.result)) / (state.count + 1),
+        mean: ((state.mean || 0)
+          * (state.count) + math.mean(action.payload.result)) / (state.count + 1),
         count: state.count + 1,
         hyperparameters: state.hyperparameters || action.payload.hyperparameters,
       };

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Icon, Step, Button } from 'semantic-ui-react';
 
 const LearningCurveStepper = ({
-  step, agent, environment, stepBackward, setStep,
+  step, agent, environment, stepBackward,
 }) => (
   <Step.Group stackable="tablet">
     {step > 0 && step < 4 && (
@@ -49,6 +49,9 @@ const LearningCurveStepper = ({
 
 LearningCurveStepper.propTypes = {
   step: PropTypes.number.isRequired,
+  agent: PropTypes.shape({ name: PropTypes.string }).isRequired,
+  environment: PropTypes.shape({ name: PropTypes.string }).isRequired,
+  stepBackward: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({

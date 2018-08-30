@@ -17,11 +17,12 @@ const ResultsTable = ({ results }) => (
     <Table.Body>
       {results.map(([key, result]) => (
         <Table.Row key={key}>
-          <Table.Cell>{Object.entries(result.hyperparameters).map(([parameter, value]) => (
-            <div>
-              {`${parameter}: ${typeof value === 'number' ? value.toFixed(5) : value}`}
-            </div>
-          ))}
+          <Table.Cell>
+            {Object.entries(result.hyperparameters).map(([parameter, value]) => (
+              <div>
+                {`${parameter}: ${typeof value === 'number' ? value.toFixed(5) : value}`}
+              </div>
+            ))}
           </Table.Cell>
           <Table.Cell>{result.mean && result.mean.toFixed(2)}</Table.Cell>
           <Table.Cell>{result.divergences}</Table.Cell>
