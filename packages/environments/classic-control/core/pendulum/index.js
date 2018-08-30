@@ -17,9 +17,6 @@ const resolveAction = (state, action) => ({
 
 class PendulumFactory extends ContinuousEnvironmentFactory {
   constructor(constants = {}) {
-    /* eslint-disable no-unreachable */
-    throw new Error('continuous actions not supported yet');
-
     super();
     const config = Object.assign({}, defaultConstants, constants);
     this.mdpFactory = new MdpFactory({
@@ -29,6 +26,10 @@ class PendulumFactory extends ContinuousEnvironmentFactory {
       isTerminated: terminated(config),
       getObservation,
     });
+  }
+
+  createEnvironment() {
+    return this.mdpFactory.createEnvironment();
   }
 
   getActionRange() {
