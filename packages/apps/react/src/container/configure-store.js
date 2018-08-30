@@ -20,7 +20,7 @@ const configureStore = ({ worker }) => {
   sagaMiddleware.run(runTaskSaga);
   sagaMiddleware.run(runTasksSaga);
   sagaMiddleware.run(handleResponseSaga);
-  store.dispatch(initializeWorkers(6)); // TODO configurable thread limit
+  store.dispatch(initializeWorkers(5)); // TODO configurable thread limit
 
   return store;
 };

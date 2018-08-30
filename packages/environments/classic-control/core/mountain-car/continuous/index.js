@@ -1,23 +1,41 @@
 const MdpFactory = require('@rl-js/redux-mdp');
+const ContinuousEnvironmentFactory = require('@rl-js/configuration/environment-types/continuous');
 const reducer = require('./reducer');
 const resolveAction = require('./resolve-action');
-const getState = require('./get-state');
+const getObservation = require('./get-state');
 
-class MountainCarFactory extends MdpFactory {
+const TIMEOUT = 5000; // 20000 is a little long
+const THROTTLE_RANGE = [-0.001, 0.001];
+
+class MountainCarFactory extends ContinuousEnvironmentFactory {
   constructor() {
-    /* eslint-disable no-unreachable */
-    throw new Error('continuous actions not supported yet');
-    super(
-      new MdpFactory({
-        reducer,
-        resolveAction,
-        getObservation: getState,
-        computeReward: () => -1,
-        isTerminated: (state, action, nextState, time) => (
-          nextState.position >= 0.5 || time >= 20000
-        ),
-      }),
-    );
+    super();
+
+    this.mdpFactory = new MdpFactory({
+      reducer,
+      resolveAction: resolveAction(THROTTLE_RANGE),
+      getObservation,
+      computeReward: () => -1,
+      isTerminated: (state, action, nextState, time) => (
+        nextState.position >= 0.5 || time >= TIMEOUT
+      ),
+    });
+  }
+
+  createEnvironment() {
+    return this.mdpFactory.createEnvironment();
+  }
+
+  getActionRange() {
+    return THROTTLE_RANGE;
+  }
+
+  getObservationCount() {
+    return 2;
+  }
+
+  getMdpFactory() {
+    return this.mdpFactory;
   }
 }
 
