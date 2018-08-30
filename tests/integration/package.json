@@ -1,0 +1,20 @@
+{
+  "name": "@rl-js/tests-integration",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Integration tests for @rl-js baselines",
+  "main": "suites.test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rl-js"
+  ],
+  "author": "cpnota@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "@rl-js/baseline-agent-suites": "^0.6.0",
+    "@rl-js/configuration": "^0.6.0",
+    "@rl-js/environments-classic-control": "^0.6.0"
+  }
+}
