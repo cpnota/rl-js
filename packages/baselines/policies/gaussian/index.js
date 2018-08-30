@@ -7,7 +7,7 @@ class Gaussian extends Policy {
     super();
     this.variance = variance;
     this.std = this.variance ** 2;
-    this.functionApproximator = functionApproximator; // TODO: this must always be linear, right now
+    this.functionApproximator = functionApproximator;
   }
 
   chooseAction(state) {
