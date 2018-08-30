@@ -3,10 +3,6 @@ import PropTypes from 'prop-types';
 import { Form, Button, Checkbox } from 'semantic-ui-react';
 import Definition from './definition';
 
-const handleChange = (name, setHyperparameter) => e => (
-  setHyperparameter(name, e.target.value != null ? Number(e.target.value) : undefined)
-);
-
 /* eslint-disable jsx-a11y/label-has-for */
 const RangeSelection = ({
   definitions,

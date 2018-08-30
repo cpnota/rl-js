@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
   Grid, Container, Header, Divider, Progress,
 } from 'semantic-ui-react';
