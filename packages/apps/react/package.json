@@ -1,6 +1,6 @@
 {
   "name": "@rl-js/react-app",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "dependencies": {
     "@rl-js/baseline-agent-suites": "^0.5.1",
     "@rl-js/configuration": "^0.5.1",
