@@ -95,17 +95,18 @@ const RunConfig = ({
 );
 
 RunConfig.propTypes = {
-  queueTasks: PropTypes.func.isRequired,
+  beginSearch: PropTypes.func.isRequired,
   episodes: PropTypes.number,
-  setEpisodes: PropTypes.func.isRequired,
-  trials: PropTypes.number,
-  setTrials: PropTypes.func.isRequired,
-  searchType: PropTypes.string.isRequired,
-  setSearchType: PropTypes.func.isRequired,
-  steps: PropTypes.number.isRequired,
-  setSteps: PropTypes.func.isRequired,
+  queueTasks: PropTypes.func.isRequired,
   samples: PropTypes.number.isRequired,
+  searchType: PropTypes.string.isRequired,
+  setEpisodes: PropTypes.func.isRequired,
   setSamples: PropTypes.func.isRequired,
+  setSearchType: PropTypes.func.isRequired,
+  setSteps: PropTypes.func.isRequired,
+  setTrials: PropTypes.func.isRequired,
+  steps: PropTypes.number.isRequired,
+  trials: PropTypes.number,
 };
 
 RunConfig.defaultProps = {

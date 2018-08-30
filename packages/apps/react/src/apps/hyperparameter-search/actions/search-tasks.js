@@ -35,7 +35,8 @@ export const generateRandomSearchTasks = ({
       payload: {
         agent,
         environment,
-        hyperparameters: Object.assign({}, ...definitions.map(definition => ({ [definition.getName()]: definition.randomValue() }))),
+        hyperparameters: Object.assign({}, ...definitions.map(definition => (
+          { [definition.getName()]: definition.randomValue() }))),
         episodes,
       },
     }));

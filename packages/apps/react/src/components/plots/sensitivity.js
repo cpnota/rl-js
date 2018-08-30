@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Plot from 'react-plotly.js';
 
-export default ({ title, results }) => {
+const SensitivityPlot = ({ title, results }) => {
   const x = results.map(({ mean }) => mean);
   const y = results.map((result, i) => 1 - (i + 1) / results.length);
 
@@ -31,3 +32,10 @@ export default ({ title, results }) => {
     />
   );
 };
+
+SensitivityPlot.propTypes = {
+  title: PropTypes.string.isRequired,
+  results: PropTypes.arrayOf(PropTypes.shape({ mean: PropTypes.number })).isRequired,
+};
+
+export default SensitivityPlot;
