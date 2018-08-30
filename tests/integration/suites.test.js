@@ -22,8 +22,7 @@ configuration.listAgentSuites().forEach((agentSuite) => {
             for (let t = 0; t < 3; t += 1) {
               agent.act();
             }
-          },
-        );
+          });
       });
     });
   });
