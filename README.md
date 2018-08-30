@@ -1,8 +1,8 @@
 # rl-js
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)]
+![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)]
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
 rl-js is a framework for creating, training, and evaluating reinforcement learning agents in JavaScript. 
 
