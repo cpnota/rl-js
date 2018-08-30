@@ -1,5 +1,9 @@
 # rl-js
 
+![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lernajs.io/)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+
 rl-js is a framework for creating, training, and evaluating reinforcement learning agents in JavaScript. 
 
 ## ...why?
@@ -22,15 +26,13 @@ rl-js has two primary design goals:
 
 The first goal relates to the incomprehensibility of much of the reinforcement learning code currently available on the web.
 This partially due to the widespread tendency to include deep-learning specific code directly into agent definitions.
-To understand the code, you must understand not only the underlying reinforcement learning algorithm, but what each call to the deep-learning framework means as well!
+To understand the code, you must understand not only the underlying reinforcement learning algorithm, but the deep-learning framework means as well!
 
-There is a broader issue at play, however, which is the widespread disregard for software engineering fundamentals within the machine learning community.
-Many members take the mindset, "If it's good enough to generate a plot for my paper, it's good enough!"
-The code becomes unreadable, and in a sense embarassing to its author.
-Its inflexible design makes it useless to anyone who wishes to build on the original work.
-The tragic result is often that the code is never published.
+There is a broader issue at play, however, which is the widespread disinterest in software engineering fundamentals within the machine learning community.
+Ugly code often leads to the tragic result of code not being shared at all, hurting reproducibility.
+When code is shared, it is often hard to extend or modify, making follow-up work more difficult.
 
-The second goal, modularity, assists in the first, but there is another reason for it: modularity has an almost completely unappreciated relationship with research.
+The second goal, modularity, assists in the first, but there is another reason for it: modularity has a strong relationship with experimental design.
 Many machine learning experiments involve replacing some component of an algorithm with a new proposed component, thereby establishing a causal relationship between the proposed component and the change in the performance of the algorithm.
 Therefore, good research code should allow the easy swapping of components. 
 This is the very definition of modularity!
@@ -40,4 +42,4 @@ We hope that we have achieved these goals at least partially, and that as a resu
 ## Usage
 
 The code for rl-js is hosted on GitHub. 
-Most of the time, however, you should install the packages [from npm](https://www.npmjs.com/search?q=%40rl-js) as needed, and build on top of them as needed.
+Most of the time, however, you should install the packages directly [from npm](https://www.npmjs.com/search?q=%40rl-js) as needed, and build on top of them as needed.
