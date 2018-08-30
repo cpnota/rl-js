@@ -1,6 +1,5 @@
 {
-  "name": "@rl-js/tests-integration",
-  "private": true,
+  "name": "@rl-js/integration-tests",
   "version": "0.0.0",
   "description": "Integration tests for @rl-js baselines",
   "main": "suites.test.js",
