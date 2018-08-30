@@ -38,7 +38,8 @@ const RunConfig = ({
   >
     <Button.Group onClick={e => e.preventDefault()}>
       <Button positive={searchType === 'grid'} onClick={() => setSearchType('grid')}>Grid</Button>
-      <Button.Or />=
+      <Button.Or />
+=
       <Button positive={searchType === 'random'} onClick={() => setSearchType('random')}>Random</Button>
     </Button.Group>
     {
