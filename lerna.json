@@ -3,7 +3,15 @@
     "packages/*",
     "packages/apps/*",
     "packages/baselines/*",
-    "packages/environments/*"
+    "packages/environments/*",
+    "tests/*"
   ],
+  "command": {
+    "publish": {
+      "ignoreChanges": [
+        "tests/*"
+      ]
+    }
+  },
   "version": "0.6.0"
 }
