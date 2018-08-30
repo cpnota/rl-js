@@ -1,6 +1,6 @@
 {
   "name": "@rl-js/integration-tests",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Integration tests for @rl-js baselines",
   "main": "suites.test.js",
   "scripts": {
@@ -14,6 +14,6 @@
   "dependencies": {
     "@rl-js/baseline-agent-suites": "^0.6.1",
     "@rl-js/configuration": "^0.6.1",
-    "@rl-js/environments-classic-control": "^0.6.1"
+    "@rl-js/environments-classic-control": "^0.6.2"
   }
 }
