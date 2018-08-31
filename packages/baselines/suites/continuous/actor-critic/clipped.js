@@ -6,7 +6,7 @@ const {
 } = require('@rl-js/configuration/hyperparameters');
 
 const ActorCritic = require('@rl-js/baseline-agents/actor-critic');
-const Gaussian = require('@rl-js/baseline-policies/gaussian');
+const Gaussian = require('@rl-js/baseline-policies/gaussian/clipped');
 const LinearStateValue = require('@rl-js/baseline-function-approximators/state-value/linear');
 const AccumulatingTraces = require('@rl-js/baseline-function-approximators/traces/accumulating');
 const Fourier = require('@rl-js/baseline-function-approximators/generic/linear/bases/fourier');
@@ -18,8 +18,8 @@ const ORDER = 'order';
 const VARIANCE = 'variance';
 
 module.exports = new AgentBuilder({
-  name: 'Actor-Critic (λ)',
-  id: 'actor-critic-lambda',
+  name: 'Actor-Critic (clipped)',
+  id: 'actor-critic-clipped',
   hyperparameters: [
     new Exponential({
       name: ALPHA_V,
