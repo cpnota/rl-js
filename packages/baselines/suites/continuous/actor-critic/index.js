@@ -25,13 +25,13 @@ module.exports = new AgentBuilder({
       name: ALPHA_V,
       min: 0.00001,
       max: 0.3,
-      default: 0.02,
+      default: 0.001,
     }),
     new Exponential({
       name: ALPHA_PI,
       min: 0.00001,
       max: 0.3,
-      default: 0.02,
+      default: 0.001,
     }),
     new Linear({
       name: VARIANCE,
@@ -53,6 +53,7 @@ module.exports = new AgentBuilder({
   ],
   createAgent: (environmentFactory, hyperparameters) => {
     const variables = environmentFactory.getObservationCount();
+    const [min, max] = environmentFactory.getActionRange();
 
     const basis = new Fourier({
       variables,
@@ -72,6 +73,8 @@ module.exports = new AgentBuilder({
     const stochasticPolicy = new Gaussian({
       functionApproximator,
       variance: hyperparameters[VARIANCE],
+      min,
+      max,
     });
 
     const stateTraces = new AccumulatingTraces(stateValueFunction);
