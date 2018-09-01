@@ -70,7 +70,7 @@ class Gaussian extends Policy {
 
   derivative(state, action) {
     if (action === this.min) return this.derivativeOfCdf(state, action);
-    if (action === this.max) return -this.derivativeOfCdf(state, action); // TODO
+    if (action === this.max) return -this.derivativeOfCdf(state, action);
     return this.derivativeOfPdf(state, action);
   }
 
