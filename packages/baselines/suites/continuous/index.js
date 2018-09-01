@@ -6,7 +6,6 @@ module.exports = new AgentSuite({
   id: 'baseline-continuous',
   builders: [
     require('./actor-critic'),
-    require('./actor-critic/clipped'),
   ],
   environmentType: ContinuousEnvironment,
 });

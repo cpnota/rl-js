@@ -2,22 +2,18 @@ const Policy = require('@rl-js/interfaces/policy');
 const gaussian = require('gaussian');
 const math = require('mathjs');
 
-// Gaussian policy with Clipped Action Policy Gradient (CAPG)
-// https://arxiv.org/pdf/1802.07564.pdf
+// Unclipped Gaussian Policy
+// The CAPG version (index.js) seems strictly better
 class Gaussian extends Policy {
-  constructor({
-    functionApproximator, variance, min, max,
-  } = {}) {
+  constructor({ functionApproximator, variance } = {}) {
     super();
     this.variance = variance;
     this.std = this.variance ** 2;
-    this.min = min;
-    this.max = max;
     this.functionApproximator = functionApproximator;
   }
 
   chooseAction(state) {
-    return Math.min(this.max, Math.max(this.min, this.getDistribution(state).ppf(Math.random())));
+    return this.getDistribution(state).ppf(Math.random());
   }
 
   chooseBestAction(state) {
@@ -25,20 +21,18 @@ class Gaussian extends Policy {
   }
 
   probability(state, action) {
-    if (action < this.min || action > this.max) return 0;
-    if (action === this.min) return this.getDistribution(state).cdf(action);
-    if (action === this.max) return 1 - this.getDistribution(state).cdf(action);
     return this.getDistribution(state).pdf(action);
   }
 
   update(state, action, error) {
-    this.functionApproximator.update(state, error * this.derivative(state, action));
+    const derivative = this.computeDerivativeWithRespectToMean(state, action);
+    this.functionApproximator.update(state, error * derivative);
     return this;
   }
 
   gradient(state, action) {
     const features = this.functionApproximator.gradient(state);
-    const derivative = this.derivative(state, action);
+    const derivative = this.computeDerivativeWithRespectToMean(state, action);
     return math.multiply(features, derivative);
   }
 
@@ -68,17 +62,7 @@ class Gaussian extends Policy {
     return gaussian(mean, this.variance);
   }
 
-  derivative(state, action) {
-    if (action === this.min) return this.derivativeOfCdf(state, action);
-    if (action === this.max) return -this.derivativeOfCdf(state, action); // TODO
-    return this.derivativeOfPdf(state, action);
-  }
-
-  derivativeOfCdf(state, action) {
-    return -this.getDistribution(state).pdf(action) / this.probability(state, action);
-  }
-
-  derivativeOfPdf(state, action) {
+  computeDerivativeWithRespectToMean(state, action) {
     const mean = this.functionApproximator.call(state);
     return (action - mean) / this.std;
   }

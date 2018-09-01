@@ -49,7 +49,7 @@ module.exports = new AgentBuilder({
       name: ORDER,
       values: [1, 2, 3],
       default: 1,
-    }),
+    })
   ],
   createAgent: (environmentFactory, hyperparameters) => {
     const variables = environmentFactory.getObservationCount();
