@@ -2,6 +2,8 @@ const Policy = require('@rl-js/interfaces/policy');
 const gaussian = require('gaussian');
 const math = require('mathjs');
 
+// Gaussian policy with Clipped Action Policy Gradient (CAPG)
+// https://arxiv.org/pdf/1802.07564.pdf
 class Gaussian extends Policy {
   constructor({
     functionApproximator, variance, min, max,

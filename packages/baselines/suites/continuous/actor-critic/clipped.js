@@ -17,9 +17,11 @@ const LAMBDA = 'lambda';
 const ORDER = 'order';
 const VARIANCE = 'variance';
 
+// actor-critic with Clipped Action Policy Gradient (CAPG)
+// https://arxiv.org/pdf/1802.07564.pdf
 module.exports = new AgentBuilder({
-  name: 'Actor-Critic (clipped)',
-  id: 'actor-critic-clipped',
+  name: 'Actor-Critic (CAPG)',
+  id: 'actor-critic-capg',
   hyperparameters: [
     new Exponential({
       name: ALPHA_V,
