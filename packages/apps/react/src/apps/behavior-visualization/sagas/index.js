@@ -31,14 +31,23 @@ export default (store, sagaMiddleware) => {
       environmentFactory.getMdpFactory().setReduxMiddleware([middleware]);
       let environment;
 
+      const frameSkip = 20;
+      let framesSkipped = 0;
       const drawFrame = () => {
+        if (framesSkipped < frameSkip) {
+          framesSkipped += 1;
+          return requestAnimationFrame(drawFrame);
+        }
+
+        framesSkipped = 0;
+
         if (!environment || environment.isTerminated()) {
           environment = environmentFactory.createEnvironment();
           agent.newEpisode(environment);
         } else {
           agent.act();
         }
-        requestAnimationFrame(drawFrame);
+        return requestAnimationFrame(drawFrame);
       };
 
       requestAnimationFrame(drawFrame);
