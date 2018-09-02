@@ -31,6 +31,12 @@ export default (store, sagaMiddleware) => {
       environmentFactory.getMdpFactory().setReduxMiddleware([middleware]);
       let environment;
 
+      const newEpisode = () => {
+        environment = environmentFactory.createEnvironment();
+        agent.newEpisode(environment);
+        store.dispatch(actions.setEnvironmentState(environment.getStore().getState()));
+      };
+
       const frameSkip = 20;
       let framesSkipped = 0;
       const drawFrame = () => {
@@ -42,8 +48,7 @@ export default (store, sagaMiddleware) => {
         framesSkipped = 0;
 
         if (!environment || environment.isTerminated()) {
-          environment = environmentFactory.createEnvironment();
-          agent.newEpisode(environment);
+          newEpisode();
         } else {
           agent.act();
         }

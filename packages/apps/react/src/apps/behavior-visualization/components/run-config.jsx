@@ -18,8 +18,8 @@ RunConfig.propTypes = {
 
 const mapDispatchToProps = dispatch => ({
   start: () => {
-    dispatch(actions.stepForward());
     dispatch(actions.start());
+    dispatch(actions.stepForward());
   },
 });
 

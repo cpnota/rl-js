@@ -1,12 +1,6 @@
 const factory = require('../factory');
 const getState = require('../factory/get-state/tabular');
-const { g, s } = require('../factory/features');
-
-const layout = [
-  [s, 0, 0],
-  [0, 0, 0],
-  [0, 0, g],
-];
+const layout = require('./layout');
 
 module.exports = factory({
   layout,
