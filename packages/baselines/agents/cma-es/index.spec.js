@@ -35,3 +35,29 @@ describe('constructor', () => {
     });
   });
 });
+
+test('generates population correctly', () => {
+  const policy = new Policy();
+  const initialParameters = [-1, 1];
+
+  policy.getParameters
+    .mockReturnValue(initialParameters);
+
+  const agent = new CMA_ES({
+    policy,
+    std: 0.001,
+    population: 10,
+  });
+
+  const population = agent.generatePopulation();
+  expect(population.length).toBe(10);
+
+  population.forEach((parameters) => {
+    expect(parameters.length).toBe(2);
+    parameters.forEach((parameter, i) => {
+      expect(parameter).not.toEqual(initialParameters[i]);
+      expect(parameter).toBeGreaterThan(initialParameters[i] - 1);
+      expect(parameter).toBeLessThan(initialParameters[i] + 1);
+    });
+  });
+});
