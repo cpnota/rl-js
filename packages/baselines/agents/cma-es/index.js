@@ -25,7 +25,9 @@ module.exports = class CMA_ES extends Agent {
     this.environment = environment;
 
     if (!this.population) {
+      this.parameters = this.policy.getParameters();
       this.population = this.generatePopulation();
+      this.returns = [];
     } else if (this.returns.length === this.population.length) {
       this.parameters = this.updateParameters();
       this.population = this.generatePopulation();
@@ -39,7 +41,7 @@ module.exports = class CMA_ES extends Agent {
   act() {
     this.action = this.policy.chooseAction(this.environment.getObservation());
     this.environment.dispatch(this.action);
-    this.returns.push(this.environment.getReward());
+    this.returns[this.returns.length - 1] += this.environment.getReward();
   }
 
   generatePopulation() {
@@ -54,6 +56,11 @@ module.exports = class CMA_ES extends Agent {
     }
 
     return population;
+  }
+
+  nextParameters() {
+    const epsilons = this.population[this.returns.length];
+    return this.parameters.map((parameter, i) => parameter + epsilons[i]);
   }
 
   updateParameters() {
