@@ -44,17 +44,13 @@ module.exports = class CMA_ES extends Agent {
 
   generatePopulation() {
     const distribution = gaussian(0, this.std ** 2);
-    const parameters = this.policy.getParameters();
     const population = [];
 
     // mirror each peturbation
     for (let p = 0; p < this.populationSize; p += 2) {
-      const epsilons = new Array(parameters.length)
-        .fill()
-        .map(() => distribution.ppf(Math.random()));
-      const policy1 = this.parameters.map((parameter, i) => parameter + epsilons[i]);
-      const policy2 = this.parameters.map((parameter, i) => parameter - epsilons[i]);
-      population.push(policy1, policy2);
+      const epsilons1 = this.parameters.map(() => distribution.ppf(Math.random()));
+      const epsilons2 = epsilons1.map(e => -e);
+      population.push(epsilons1, epsilons2);
     }
 
     return population;

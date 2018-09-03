@@ -52,12 +52,12 @@ test('generates population correctly', () => {
   const population = agent.generatePopulation();
   expect(population.length).toBe(10);
 
-  population.forEach((parameters) => {
-    expect(parameters.length).toBe(2);
-    parameters.forEach((parameter, i) => {
-      expect(parameter).not.toEqual(initialParameters[i]);
-      expect(parameter).toBeGreaterThan(initialParameters[i] - 1);
-      expect(parameter).toBeLessThan(initialParameters[i] + 1);
+  population.forEach((epsilons) => {
+    expect(epsilons.length).toBe(2);
+    epsilons.forEach((epsilon) => {
+      expect(epsilon).not.toEqual(0);
+      expect(epsilon).toBeGreaterThan(-1);
+      expect(epsilon).toBeLessThan(1);
     });
   });
 });
