@@ -1,5 +1,5 @@
 const {
-  Environment,
+  // Environment,
   Policy,
 } = require('../__mocks__/');
 const CMA_ES = require('.');

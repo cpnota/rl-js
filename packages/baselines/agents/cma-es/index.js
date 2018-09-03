@@ -21,7 +21,7 @@ module.exports = class CMA_ES extends Agent {
   }
 
   newEpisode(environment) {
-    this.environmnet = environmnet
+    this.environmnet = environment;
   }
 
   act() {
