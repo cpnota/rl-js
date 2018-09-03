@@ -5,16 +5,19 @@ const {
 const checkInterface = require('check-interface');
 const check = require('check-types');
 const gaussian = require('gaussian');
+const math = require('mathjs');
 
 module.exports = class CMA_ES extends Agent {
   constructor({
     policy,
     std,
     population,
+    alpha,
     gamma = 1,
   }) {
     super();
     this.policy = checkInterface(policy, Policy);
+    this.alpha = check.assert.number(alpha);
     this.std = check.assert.number(std);
     this.populationSize = check.assert.number(population);
     this.gamma = check.assert.number(gamma);
@@ -64,6 +67,9 @@ module.exports = class CMA_ES extends Agent {
   }
 
   updateParameters() {
-    return this.parameters;
+    return this.parameters.map((initialValue, parameterIndex) => (
+      initialValue + this.alpha / this.std * math.mean(this.population.map(
+        (epsilons, episode) => this.returns[episode] * epsilons[parameterIndex],
+      ))));
   }
 };

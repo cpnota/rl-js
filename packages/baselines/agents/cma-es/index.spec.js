@@ -9,6 +9,7 @@ describe('constructor', () => {
     expect(
       () => new CMA_ES({
         policy: new Policy(),
+        alpha: 0.5,
         std: 1,
         population: 10,
       }),
@@ -17,6 +18,7 @@ describe('constructor', () => {
 
   const argNames = [
     'policy',
+    'alpha',
     'std',
     'population',
     'gamma',
@@ -26,6 +28,7 @@ describe('constructor', () => {
     test(`throws error if ${arg} is not defined`, () => {
       const args = {
         policy: new Policy(),
+        alpha: 0.5,
         std: 1,
         population: 10,
         gamma: 1,
@@ -40,11 +43,11 @@ test('generates population correctly', () => {
   const policy = new Policy();
   const initialParameters = [-1, 1];
 
-  policy.getParameters
-    .mockReturnValue(initialParameters);
+  policy.getParameters.mockReturnValue(initialParameters);
 
   const agent = new CMA_ES({
     policy,
+    alpha: 0.5,
     std: 0.001,
     population: 10,
   });
@@ -70,6 +73,7 @@ test('initializes first episode correctly', () => {
 
   const agent = new CMA_ES({
     policy,
+    alpha: 0.5,
     std: 0.001,
     population: 10,
   });
@@ -86,11 +90,11 @@ test('initializes first episode correctly', () => {
 test('initializes second episode correctly', () => {
   const policy = new Policy();
   const initialParameters = [-1, 1];
-  policy.getParameters
-    .mockReturnValue(initialParameters);
+  policy.getParameters.mockReturnValue(initialParameters);
 
   const agent = new CMA_ES({
     policy,
+    alpha: 0.5,
     std: 0.001,
     population: 10,
   });
@@ -114,6 +118,7 @@ test('executes policy over episode', () => {
 
   const agent = new CMA_ES({
     policy,
+    alpha: 0.5,
     std: 0.001,
     population: 10,
   });
@@ -146,11 +151,11 @@ test('records returns correctly each episode', () => {
   const policy = new Policy();
 
   const initialParameters = [-1, 1];
-  policy.getParameters
-    .mockReturnValue(initialParameters);
+  policy.getParameters.mockReturnValue(initialParameters);
 
   const agent = new CMA_ES({
     policy,
+    alpha: 0.5,
     std: 0.001,
     population: 10,
   });
@@ -183,6 +188,7 @@ test('generates new population after each population is tested', () => {
 
   const agent = new CMA_ES({
     policy,
+    alpha: 0.5,
     std: 0.001,
     population: 10,
   });
@@ -209,4 +215,25 @@ test('generates new population after each population is tested', () => {
   });
 
   expect(agent.returns).toEqual([0]);
+});
+
+test('updates parameters', () => {
+  const policy = new Policy();
+
+  const initialParameters = [-1, 1];
+
+  const agent = new CMA_ES({
+    policy,
+    std: 0.001,
+    population: 2,
+    alpha: 0.5,
+  });
+
+  agent.parameters = initialParameters;
+  agent.population = [[0.001, 0.002], [0.002, 0.004]];
+  agent.returns = [10, -10];
+
+  const newParameters = agent.updateParameters();
+
+  expect(newParameters).toEqual([-3.5, -4]);
 });
