@@ -9,7 +9,7 @@ import GridWorld from '../../../../components/environments/classic-control/grid-
 const Environment = ({
   state,
 }) => (
-  <Container>
+  <Container style={{ width: 500 }}>
     {state && <GridWorld state={state} />}
   </Container>
 );

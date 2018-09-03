@@ -8,7 +8,7 @@ import * as actions from '../actions';
 export default (store, sagaMiddleware) => {
   const middleware = environmentStore => next => (action) => {
     const result = next(action);
-    store.dispatch(actions.setEnvironmentState(environmentStore.getState()));
+    store.dispatch(actions.setEnvironmentState(environmentStore.getState(), action));
     return result;
   };
 

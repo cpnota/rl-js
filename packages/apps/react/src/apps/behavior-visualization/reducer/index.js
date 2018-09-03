@@ -10,6 +10,7 @@ const defaultState = {
   errors: 0,
   environmentState: undefined,
   returns: 0,
+  lastAction: undefined,
 };
 
 const learningCurve = (state = defaultState, action) => {
@@ -70,6 +71,7 @@ const learningCurve = (state = defaultState, action) => {
         results: action.payload.terminated
           ? state.results.concat(state.returns + action.payload.reward)
           : state.results,
+        lastAction: action.payload.action,
       };
     default:
       return state;

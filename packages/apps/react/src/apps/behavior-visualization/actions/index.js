@@ -45,9 +45,12 @@ export const start = () => ({
   type: types.START,
 });
 
-export const setEnvironmentState = state => ({
+export const setEnvironmentState = (state, action) => ({
   type: types.SET_ENVIRONMENT_STATE,
-  payload: state,
+  payload: {
+    ...state,
+    action,
+  },
 });
 
 export const recordTrialError = (message) => {

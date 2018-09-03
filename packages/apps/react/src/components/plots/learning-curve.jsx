@@ -30,6 +30,7 @@ export default class LearningCurve extends React.PureComponent {
         layout={{
           title: `${title}`,
           width: 500,
+          height: 400,
         }}
 
         xaxis={{
