@@ -11,6 +11,7 @@ const LinearStateValue = require('@rl-js/baseline-function-approximators/state-v
 const Fourier = require('@rl-js/baseline-function-approximators/generic/linear/bases/fourier');
 
 const ALPHA = 'alpha';
+const STD = 'std';
 const POPULATION_SIZE = 'population_size';
 const ORDER = 'order';
 
@@ -23,6 +24,12 @@ module.exports = new AgentBuilder({
       min: 0.00001,
       max: 0.3,
       default: 0.001,
+    }),
+    new Exponential({
+      name: STD,
+      min: 0.01,
+      max: 10,
+      default: 1,
     }),
     new Linear({
       name: POPULATION_SIZE,
@@ -57,7 +64,7 @@ module.exports = new AgentBuilder({
     return new CMA_ES({
       policy,
       alpha: hyperparameters[ALPHA],
-      std: 1,
+      std: hyperparameters[STD],
       population: hyperparameters[POPULATION_SIZE],
     });
   },
