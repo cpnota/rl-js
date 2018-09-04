@@ -17,6 +17,40 @@ Python is the scripting language currently preferred by the machine learning com
 The latter point is the most important to me.
 The web is the ultimate platform for sharing, and JavaScript is the *lingua franca*.
 
+## Installation
+
+npm and Node are prerequisites.
+The preferred manner for installing node is through [nvm](https://github.com/creationix/nvm).
+
+Once npm is installed, you'll need to install [Lerna](https://lernajs.io).
+
+```bash
+npm install --global lerna
+```
+
+Finally, you can clone this repo, and "bootstrap" the project using lerna:
+
+```bash
+git clone git@github.com:cpnota/rl-js.git
+cd rl-js
+lerna bootstrap
+```
+
+## Launching the App
+
+You can run the `rl-js` app locally in your browser, allowing you to instantly try out changes.
+After installing, simply run:
+
+```
+cd packages/apps/react
+npm start
+```
+
+Then open [http://localhost:3000](http://localhost:30000) in your browser.
+
+
+The app can also be installed as an external dependency in your own project, allowing you to inject your own agents, enviornments, and `rl-js` apps (instructions not provided yet).
+
 ## Design Philosophy
 
 rl-js has two primary design goals:
