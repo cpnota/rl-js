@@ -25,17 +25,13 @@ module.exports = class CMA_ES extends Agent {
     this.std = check.assert.number(std);
     this.populationSize = check.assert.number(population);
     this.gamma = check.assert.number(gamma);
-    this.parameters = this.policy.getParameters();
+    this.initialize();
   }
 
   newEpisode(environment) {
     this.environment = environment;
 
-    if (!this.population) {
-      this.parameters = this.policy.getParameters();
-      this.population = this.generatePopulation();
-      this.returns = [];
-    } else if (this.returns.length === this.population.length) {
+    if (this.shouldUpdate()) {
       this.parameters = this.updateParameters();
       this.population = this.generatePopulation();
       this.returns = [];
@@ -49,6 +45,16 @@ module.exports = class CMA_ES extends Agent {
     this.action = this.policy.chooseAction(this.environment.getObservation());
     this.environment.dispatch(this.action);
     this.returns[this.returns.length - 1] += this.environment.getReward();
+  }
+
+  initialize() {
+    this.parameters = this.policy.getParameters();
+    this.population = this.generatePopulation();
+    this.returns = [];
+  }
+
+  shouldUpdate() {
+    return this.returns.length === this.population.length;
   }
 
   generatePopulation() {
@@ -65,15 +71,15 @@ module.exports = class CMA_ES extends Agent {
     return population;
   }
 
+  updateParameters() {
+    return this.parameters.map((parameterValue, parameterIndex) => (
+      parameterValue + this.alpha / this.std * math.mean(this.population.map(
+        (epsilons, episode) => this.returns[episode] * epsilons[parameterIndex],
+      ))));
+  }
+
   nextParameters() {
     const epsilons = this.population[this.returns.length];
     return this.parameters.map((parameter, i) => parameter + this.std * epsilons[i]);
-  }
-
-  updateParameters() {
-    return this.parameters.map((initialValue, parameterIndex) => (
-      initialValue + this.alpha / this.std * math.mean(this.population.map(
-        (epsilons, episode) => this.returns[episode] * epsilons[parameterIndex],
-      ))));
   }
 };

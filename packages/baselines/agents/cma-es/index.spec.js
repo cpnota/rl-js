@@ -6,9 +6,13 @@ const CMA_ES = require('.');
 
 describe('constructor', () => {
   test('constructs object', () => {
+    const policy = new Policy();
+    const initialParameters = [-1, 1];
+    policy.getParameters.mockReturnValue(initialParameters);
+
     expect(
       () => new CMA_ES({
-        policy: new Policy(),
+        policy,
         alpha: 0.5,
         std: 1,
         population: 10,
@@ -42,7 +46,6 @@ describe('constructor', () => {
 test('generates population correctly', () => {
   const policy = new Policy();
   const initialParameters = [-1, 1];
-
   policy.getParameters.mockReturnValue(initialParameters);
 
   const agent = new CMA_ES({
@@ -185,8 +188,7 @@ test('generates new population after each population is tested', () => {
 
   const initialParameters = [-1, 1];
   const updatedParameters = [10, 20];
-  policy.getParameters
-    .mockReturnValue(initialParameters);
+  policy.getParameters.mockReturnValue(initialParameters);
 
   const agent = new CMA_ES({
     policy,
@@ -221,8 +223,8 @@ test('generates new population after each population is tested', () => {
 
 test('updates parameters', () => {
   const policy = new Policy();
-
   const initialParameters = [-1, 1];
+  policy.getParameters.mockReturnValue(initialParameters);
 
   const agent = new CMA_ES({
     policy,
