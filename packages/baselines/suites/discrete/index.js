@@ -9,6 +9,7 @@ module.exports = new AgentSuite({
     require('./actor-critic-lambda'),
     require('./q-lambda'),
     require('./reinforce'),
+    require('./cma-es'),
   ],
   environmentType: DiscreteEnvironment,
 });
