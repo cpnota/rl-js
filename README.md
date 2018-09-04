@@ -19,8 +19,8 @@ The web is the ultimate platform for sharing, and JavaScript is the *lingua fran
 
 ## Installation
 
-npm and Node are prerequisites.
-The preferred manner for installing node is through [nvm](https://github.com/creationix/nvm).
+[npm](https://www.npmjs.com) and [node](https://nodejs.org/en/) are prerequisites.
+The preferred manner for installing `node` is through [nvm](https://github.com/creationix/nvm).
 
 Once npm is installed, you'll need to install [Lerna](https://lernajs.io).
 
@@ -28,13 +28,15 @@ Once npm is installed, you'll need to install [Lerna](https://lernajs.io).
 npm install --global lerna
 ```
 
-Finally, you can clone this repo, and "bootstrap" the project using lerna:
+Finally, you can clone this repo, and "bootstrap" the project using Lerna:
 
 ```bash
 git clone git@github.com:cpnota/rl-js.git
 cd rl-js
 lerna bootstrap
 ```
+
+All packages are also available for installation [from npm](https://www.npmjs.com/settings/rl-js/packages).
 
 ## Launching the App
 
