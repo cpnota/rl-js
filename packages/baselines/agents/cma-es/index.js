@@ -8,6 +8,9 @@ const gaussian = require('gaussian');
 const math = require('mathjs');
 
 // https://arxiv.org/pdf/1703.03864.pdf
+// As recommended, implemented with a static
+// covariance matrix, which is simply the identity matrix
+// scaled by σ (std).
 module.exports = class CMA_ES extends Agent {
   constructor({
     policy,
