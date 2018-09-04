@@ -59,22 +59,22 @@ test('generates population correctly', () => {
     expect(epsilons.length).toBe(2);
     epsilons.forEach((epsilon) => {
       expect(epsilon).not.toEqual(0);
-      expect(epsilon).toBeGreaterThan(-1);
-      expect(epsilon).toBeLessThan(1);
+      expect(epsilon).toBeGreaterThan(-100);
+      expect(epsilon).toBeLessThan(100);
     });
   });
 });
 
 test('initializes first episode correctly', () => {
   const policy = new Policy();
+  const std = 0.001;
   const initialParameters = [-1, 1];
-  policy.getParameters
-    .mockReturnValue(initialParameters);
+  policy.getParameters.mockReturnValue(initialParameters);
 
   const agent = new CMA_ES({
     policy,
     alpha: 0.5,
-    std: 0.001,
+    std,
     population: 10,
   });
 
@@ -83,19 +83,20 @@ test('initializes first episode correctly', () => {
   const parameters = policy.setParameters.mock.calls[0][0];
   expect(parameters.length).toBe(2);
   parameters.forEach((parameter, i) => {
-    expect(parameter).toBe(initialParameters[i] + agent.population[0][i]);
+    expect(parameter).toBe(initialParameters[i] + std * agent.population[0][i]);
   });
 });
 
 test('initializes second episode correctly', () => {
   const policy = new Policy();
+  const std = 0.001;
   const initialParameters = [-1, 1];
   policy.getParameters.mockReturnValue(initialParameters);
 
   const agent = new CMA_ES({
     policy,
     alpha: 0.5,
-    std: 0.001,
+    std,
     population: 10,
   });
 
@@ -105,7 +106,7 @@ test('initializes second episode correctly', () => {
   const parameters = policy.setParameters.mock.calls[1][0];
   expect(parameters.length).toBe(2);
   parameters.forEach((parameter, i) => {
-    expect(parameter).toBe(initialParameters[i] + agent.population[1][i]);
+    expect(parameter).toBe(initialParameters[i] + std * agent.population[1][i]);
   });
 });
 
@@ -180,6 +181,7 @@ test('records returns correctly each episode', () => {
 
 test('generates new population after each population is tested', () => {
   const policy = new Policy();
+  const std = 0.001;
 
   const initialParameters = [-1, 1];
   const updatedParameters = [10, 20];
@@ -189,7 +191,7 @@ test('generates new population after each population is tested', () => {
   const agent = new CMA_ES({
     policy,
     alpha: 0.5,
-    std: 0.001,
+    std,
     population: 10,
   });
 
@@ -211,7 +213,7 @@ test('generates new population after each population is tested', () => {
   const parameters = policy.setParameters.mock.calls[10][0];
   expect(parameters.length).toBe(2);
   parameters.forEach((parameter, i) => {
-    expect(parameter).toBe(updatedParameters[i] + newPopulation[0][i]);
+    expect(parameter).toBe(updatedParameters[i] + std * newPopulation[0][i]);
   });
 
   expect(agent.returns).toEqual([0]);

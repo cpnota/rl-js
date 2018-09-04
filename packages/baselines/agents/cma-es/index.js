@@ -7,6 +7,7 @@ const check = require('check-types');
 const gaussian = require('gaussian');
 const math = require('mathjs');
 
+// https://arxiv.org/pdf/1703.03864.pdf
 module.exports = class CMA_ES extends Agent {
   constructor({
     policy,
@@ -48,10 +49,10 @@ module.exports = class CMA_ES extends Agent {
   }
 
   generatePopulation() {
-    const distribution = gaussian(0, this.std ** 2);
+    const distribution = gaussian(0, 1);
     const population = [];
 
-    // mirror each peturbation
+    // mirror each perturbation
     for (let p = 0; p < this.populationSize; p += 2) {
       const epsilons1 = this.parameters.map(() => distribution.ppf(Math.random()));
       const epsilons2 = epsilons1.map(e => -e);
@@ -63,7 +64,7 @@ module.exports = class CMA_ES extends Agent {
 
   nextParameters() {
     const epsilons = this.population[this.returns.length];
-    return this.parameters.map((parameter, i) => parameter + epsilons[i]);
+    return this.parameters.map((parameter, i) => parameter + this.std * epsilons[i]);
   }
 
   updateParameters() {
