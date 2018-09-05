@@ -5,11 +5,12 @@ module.exports = new AgentSuite({
   name: 'Baselines Discrete (LFA)',
   id: 'baseline-discrete-lfa',
   builders: [
-    require('./sarsa-lambda'),
     require('./actor-critic-lambda'),
+    require('./cma-es'),
+    require('./nac-td'),
     require('./q-lambda'),
     require('./reinforce'),
-    require('./cma-es'),
+    require('./sarsa-lambda'),
   ],
   environmentType: DiscreteEnvironment,
 });
