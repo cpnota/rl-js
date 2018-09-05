@@ -67,7 +67,7 @@ module.exports = new AgentBuilder({
 
     const functionApproximator = new LinearStateValue({
       basis,
-      alpha: hyperparameters[ALPHA_PI],
+      alpha: hyperparameters[ALPHA_V],
     });
 
     const stochasticPolicy = new Gaussian({
