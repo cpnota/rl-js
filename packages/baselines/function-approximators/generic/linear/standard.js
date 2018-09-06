@@ -30,6 +30,12 @@ class LinearFunctionApproximator extends FunctionApproximator {
   }
 
   update(args, error) {
+    if (Number.isNaN(error)) {
+      throw new Error(`Error was not a number! ${JSON.stringify({
+        args,
+        error,
+      })}`);
+    }
     this.weights = math.add(
       this.weights,
       math.multiply(this.alpha, error, this.basis.features(args)),
