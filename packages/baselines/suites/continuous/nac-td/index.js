@@ -71,7 +71,7 @@ module.exports = new AgentBuilder({
       min,
       max,
     });
-    
+
     const stateValueFunction = new LinearStateValue({
       basis,
       alpha: hyperparameters[ALPHA_V],

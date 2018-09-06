@@ -1,15 +1,11 @@
-const math = require('mathjs');
 const LinearFunctionApproximator = require('@rl-js/baseline-function-approximators/generic/linear/');
-const CompatibleBasis = require('./compatible-basis');
 const {
   StateValueFunction,
-  StateTraces,
-  Agent,
-  Environment,
   Policy,
 } = require('@rl-js/interfaces');
 const checkInterface = require('check-interface');
 const check = require('check-types');
+const CompatibleBasis = require('./compatible-basis');
 
 /* eslint-disable camelcase */
 module.exports = class NAC_TD {

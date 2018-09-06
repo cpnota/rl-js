@@ -67,7 +67,7 @@ module.exports = new AgentBuilder({
       alpha: hyperparameters[ALPHA_V],
     });
 
-    const createAdvantageTraces = functionApproximator => new AccumulatingTraces(functionApproximator);
+    const createAdvantageTraces = advantageFunction => new AccumulatingTraces(advantageFunction);
 
     const stateTraces = new AccumulatingTraces(stateValueFunction);
 
