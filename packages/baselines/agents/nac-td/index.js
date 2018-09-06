@@ -28,18 +28,14 @@ module.exports = class NAC_TD {
     this.stateTraces = checkInterface(stateTraces, StateTraces);
     this.update_frequency = check.assert.number(update_frequency);
     this.count = 0;
-
-    this.advantageFunction = new LinearFunctionApproximator({
-      alpha: alpha_w,
-      basis: new CompatibleBasis(policy),
-    });
-    this.advantageTraces = createAdvantageTraces(this.advantageFunction);
+    this.createAdvantageFunction(createAdvantageTraces);
   }
 
   newEpisode(environment) {
     this.environment = environment;
     this.stateTraces.reset();
     this.advantageTraces.reset();
+    this.nextState = this.environment.getObservation();
   }
 
   act() {
@@ -48,11 +44,19 @@ module.exports = class NAC_TD {
     this.updateActor();
   }
 
+  createAdvantageFunction(createAdvantageTraces) {
+    this.advantageFunction = new LinearFunctionApproximator({
+      alpha: this.alpha_w,
+      basis: new CompatibleBasis(this.policy),
+    });
+    this.advantageTraces = createAdvantageTraces(this.advantageFunction);
+  }
+
   executePolicy() {
-    this.state = this.environment.getState();
+    this.state = this.nextState;
     this.action = this.policy.chooseAction(this.state);
     this.environment.dispatch(this.action);
-    this.nextState = this.environment.getState();
+    this.nextState = this.environment.getObservation();
   }
 
   updateCritic() {
@@ -63,13 +67,13 @@ module.exports = class NAC_TD {
     const expectedAdvantage = this.advantageFunction.call([this.state, this.action]);
     const advantageError = sampleAdvantage - expectedAdvantage;
 
-    this.advantageTraces.record([this.state, this.action]);
-    this.advantageTraces.update(advantageError);
-    this.advantageTraces.decay(decayFactor);
-
     this.stateTraces.record(this.state);
     this.stateTraces.update(tdError);
     this.stateTraces.decay(decayFactor);
+
+    this.advantageTraces.record([this.state, this.action]);
+    this.advantageTraces.update(advantageError);
+    this.advantageTraces.decay(decayFactor);
   }
 
   updateActor() {
