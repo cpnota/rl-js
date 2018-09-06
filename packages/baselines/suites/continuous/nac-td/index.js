@@ -12,6 +12,7 @@ const AccumulatingTraces = require('@rl-js/baseline-function-approximators/trace
 const Fourier = require('@rl-js/baseline-function-approximators/generic/linear/bases/fourier');
 
 const ALPHA_V = 'alpha_v';
+const ALPHA_A = 'alpha_a';
 const ALPHA_PI = 'alpha_pi';
 const LAMBDA = 'lambda';
 const ORDER = 'order';
@@ -23,6 +24,12 @@ module.exports = new AgentBuilder({
   hyperparameters: [
     new Exponential({
       name: ALPHA_V,
+      min: 0.00001,
+      max: 0.3,
+      default: 0.001,
+    }),
+    new Exponential({
+      name: ALPHA_A,
       min: 0.00001,
       max: 0.3,
       default: 0.001,
@@ -81,7 +88,7 @@ module.exports = new AgentBuilder({
     const stateTraces = new AccumulatingTraces(stateValueFunction);
 
     return new NAC_TD({
-      alpha_w: hyperparameters[ALPHA_V],
+      alpha_w: hyperparameters[ALPHA_A],
       createAdvantageTraces,
       lambda: hyperparameters[LAMBDA],
       policy,
