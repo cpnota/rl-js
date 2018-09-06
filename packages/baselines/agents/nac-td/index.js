@@ -1,6 +1,7 @@
 const LinearFunctionApproximator = require('@rl-js/baseline-function-approximators/generic/linear/');
 const {
   StateValueFunction,
+  StateTraces,
   Policy,
 } = require('@rl-js/interfaces');
 const checkInterface = require('check-interface');
@@ -24,8 +25,8 @@ module.exports = class NAC_TD {
     this.lambda = check.assert.number(lambda);
     this.policy = checkInterface(policy, Policy);
     this.stateValueFunction = checkInterface(stateValueFunction, StateValueFunction);
-    this.stateTraces = stateTraces;
-    this.update_frequency = update_frequency;
+    this.stateTraces = checkInterface(stateTraces, StateTraces);
+    this.update_frequency = check.assert.number(update_frequency);
     this.count = 0;
 
     this.advantageFunction = new LinearFunctionApproximator({
