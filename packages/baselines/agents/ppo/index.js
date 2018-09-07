@@ -21,13 +21,17 @@ module.exports = class ProximalPolicyOptimization {
   act() {
     const state = this.environment.getObservation();
     const action = this.policy.chooseAction(state);
-    const actionProbability = this.policy.probability(state, action);
     this.environment.dispatch(action);
     const reward = this.environment.getReward();
     const terminal = this.environment.isTerminated();
 
     this.history.push({
-      state, action, reward, terminal, actionProbability,
+      state,
+      action,
+      reward,
+      terminal,
+      actionProbability: this.policy.probability(state, action),
+      value: this.v.call(state),
     });
 
     if (this.batchStrategy.shouldUpdate(this.history)) {
@@ -37,29 +41,29 @@ module.exports = class ProximalPolicyOptimization {
   }
 
   update() {
-    this.updateValueFunction();
+    this.computeTdErrors();
     this.computeAdvantages();
+    this.optimizeValueFunction();
     this.optimizePolicy();
   }
 
-  updateValueFunction() {
-    this.history.forEach(({ state, reward, terminal }, t) => {
-      const estimate = this.v.call(state);
-
-      if (!terminal && !this.history[t + 1]) {
+  computeTdErrors() {
+    this.history.forEach((step, t) => {
+      if (!step.terminal && !this.history[t + 1]) {
         return; // cannot compute tdError
       }
 
-      const nextEstimate = terminal ? 0 : this.v.call(this.history[t + 1].state);
-      const tdError = reward + this.getGamma() * nextEstimate - estimate;
-      this.v.update(state, tdError);
+      const {
+        reward, terminal, value,
+      } = step;
+
+      step.tdError = terminal // eslint-disable-line no-param-reassign
+        ? reward - value
+        : reward + this.getGamma() * this.history[t + 1].value - value;
     });
   }
 
   computeAdvantages() {
-    this.computeBaselines();
-    this.computeTdErrors();
-
     const discountRate = this.getGamma() * this.getLambda();
 
     // compute the advantage from the initial state
@@ -75,6 +79,13 @@ module.exports = class ProximalPolicyOptimization {
     });
   }
 
+  optimizeValueFunction() {
+    this.history.forEach(({ state, tdError }) => {
+      if (tdError == null) return;
+      this.v.update(state, tdError);
+    });
+  }
+
   optimizePolicy() {
     const samples = this.history;
     const computeGradient = sample => this.getSampleGradient(sample);
@@ -83,27 +94,6 @@ module.exports = class ProximalPolicyOptimization {
       samples,
       computeGradient,
       update,
-    });
-  }
-
-  computeBaselines() {
-    this.history.forEach((step) => {
-      step.baseline = this.v.call(step.state); // eslint-disable-line no-param-reassign
-    });
-  }
-
-  computeTdErrors() {
-    this.history.forEach((step, t) => {
-      const { state, reward, terminal } = step;
-      const estimate = this.v.call(state);
-
-      if (!terminal && !this.history[t + 1]) {
-        return; // cannot compute tdError
-      }
-
-      const nextEstimate = terminal ? 0 : this.v.call(this.history[t + 1].state);
-      /* eslint-disable-next-line no-param-reassign */
-      step.tdError = reward + this.getGamma() * nextEstimate - estimate;
     });
   }
 

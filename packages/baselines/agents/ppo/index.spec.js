@@ -1,29 +1,21 @@
 const PPO = require('.');
 
-test('gets baselines', () => {
-  const agent = new PPO({
-    stateValueFunction: {
-      call: state => state * 2,
-    },
-  });
-  agent.history = [1, 2, 3].map(state => ({
-    state,
-  }));
-  agent.computeBaselines();
-  expect(agent.history.map(({ baseline }) => baseline)).toEqual([2, 4, 6]);
-});
-
 test('computes advantages', () => {
+  const stateValueFunction = {
+    call: state => state * 2,
+  };
+
   const agent = new PPO({
-    stateValueFunction: {
-      call: state => state * 2,
-    },
+    stateValueFunction,
+    gamma: 1,
   });
   agent.history = [1, 2, 3].map(state => ({
     state,
     reward: state,
+    value: stateValueFunction.call(state), // some value function
     terminal: state === 3,
   }));
+  agent.computeTdErrors();
   agent.computeAdvantages();
   expect(agent.history.map(({ advantage }) => advantage)).toEqual([4, 1, -3]);
 });
