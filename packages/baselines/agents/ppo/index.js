@@ -2,15 +2,13 @@ const math = require('mathjs');
 
 const {
   Agent,
-  StateTraces,
   StateValueFunction,
   Policy,
-  PolicyTraces,
 } = require('@rl-js/interfaces');
 const checkInterface = require('check-interface');
 const check = require('check-types');
-const BatchStrategy = require('./batches');
-const Optimizer = require('./optimize');
+const BatchStrategy = require('./batch-strategies');
+const Optimizer = require('./optimizers');
 
 module.exports = class ProximalPolicyOptimization extends Agent {
   constructor({

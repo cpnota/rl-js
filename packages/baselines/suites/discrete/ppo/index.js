@@ -6,8 +6,8 @@ const {
 } = require('@rl-js/configuration/hyperparameters');
 
 const PPO = require('@rl-js/baseline-agents/ppo');
-const FixedBatch = require('@rl-js/baseline-agents/ppo/batches/fixed');
-const MinibatchSGD = require('@rl-js/baseline-agents/ppo/optimize/minibatch-sgd');
+const FixedBatch = require('@rl-js/baseline-agents/ppo/batch-strategies/fixed');
+const MinibatchSGD = require('@rl-js/baseline-agents/ppo/optimizers/minibatch-sgd');
 const SoftMax = require('@rl-js/baseline-policies/soft-max');
 const LinearStateValue = require('@rl-js/baseline-function-approximators/state-value/linear');
 const Fourier = require('@rl-js/baseline-function-approximators/generic/linear/bases/fourier');

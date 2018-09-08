@@ -1,6 +1,6 @@
 const PPO = require('.');
-const FixedBatch = require('./batches/fixed');
-const MiniBatchSGD = require('./optimize/minibatch-sgd');
+const FixedBatch = require('./batch-strategies/fixed');
+const MiniBatchSGD = require('./optimizers/minibatch-sgd');
 const {
   StateValueFunction,
   PolicyTraces,
