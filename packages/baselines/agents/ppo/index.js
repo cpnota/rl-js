@@ -15,7 +15,6 @@ module.exports = class ProximalPolicyOptimization extends Agent {
     batchStrategy,
     epsilon,
     gamma = 1,
-    lambda = 1,
     optimizer,
     policy,
     stateValueFunction,
@@ -24,7 +23,6 @@ module.exports = class ProximalPolicyOptimization extends Agent {
     this.batchStrategy = checkInterface(batchStrategy, BatchStrategy);
     this.epsilon = check.assert.number(epsilon);
     this.gamma = check.assert.number(gamma);
-    this.lambda = check.assert.number(lambda);
     this.optimizer = checkInterface(optimizer, Optimizer);
     this.policy = checkInterface(policy, Policy);
     this.v = checkInterface(stateValueFunction, StateValueFunction);
@@ -67,33 +65,37 @@ module.exports = class ProximalPolicyOptimization extends Agent {
 
   computeTdErrors() {
     this.history.forEach((step, t) => {
-      if (!step.terminal && !this.history[t + 1]) {
+      if (step.terminal || !this.history[t + 1]) {
         return; // cannot compute tdError
       }
 
       const {
-        reward, terminal, value,
+        reward, value,
       } = step;
+
+      const {
+        terminal, value: nextValue,
+      } = this.history[t + 1];
 
       step.tdError = terminal // eslint-disable-line no-param-reassign
         ? reward - value
-        : reward + this.getGamma() * this.history[t + 1].value - value;
+        : reward + this.getGamma() * nextValue - value;
     });
   }
 
   computeAdvantages() {
-    const discountRate = this.getGamma() * this.getLambda();
+    const gamma = this.getGamma();
 
     // compute the advantage from the initial state
     // and then use this computation to iteratively
     // compute the computation for the rest of the states.
     // This is 2n instead of n^2
     let advantage = this.history.reduce((discountedSum, { tdError = 0 }, t) => (
-      discountedSum + tdError * (discountRate ** t)), 0);
+      discountedSum + tdError * (gamma ** t)), 0);
 
     this.history.forEach((step) => {
       step.advantage = advantage; // eslint-disable-line no-param-reassign
-      advantage = (advantage - step.tdError) ** (1 / discountRate);
+      advantage = (advantage - step.tdError) ** (1 / gamma);
     });
   }
 
@@ -148,9 +150,5 @@ module.exports = class ProximalPolicyOptimization extends Agent {
 
   getGamma() {
     return this.gamma;
-  }
-
-  getLambda() {
-    return this.lambda;
   }
 };

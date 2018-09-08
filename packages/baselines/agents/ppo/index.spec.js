@@ -3,32 +3,29 @@ const FixedBatch = require('./batch-strategies/fixed');
 const MiniBatchSGD = require('./optimizers/minibatch-sgd');
 const {
   StateValueFunction,
-  PolicyTraces,
   Policy,
   Environment,
-  StateTraces,
 } = require('../__mocks__/');
 
-const args = {
+const defaultArgs = {
   batchStrategy: new FixedBatch(10),
   epsilon: 0.5,
   gamma: 1,
-  lambda: 1,
   optimizer: new MiniBatchSGD({ miniBatchSize: 5, epochs: 10 }),
   policy: new Policy(),
   stateValueFunction: new StateValueFunction(),
-}
+};
 
 describe('constructor', () => {
   test('constructs object', () => {
     expect(
-      () => new PPO(args),
+      () => new PPO(defaultArgs),
     ).not.toThrow();
   });
 
-  Object.keys(args).forEach((arg) => {
+  Object.keys(defaultArgs).forEach((arg) => {
     test(`throws error if ${arg} is not defined`, () => {
-      const myArgs = { ...args };
+      const myArgs = { ...defaultArgs };
       myArgs[arg] = null;
       expect(() => new PPO(myArgs)).toThrow(TypeError);
     });
@@ -36,121 +33,226 @@ describe('constructor', () => {
 });
 
 const initialize = () => {
+  const batchStrategy = new FixedBatch(3);
+  const epsilon = 0.5;
+  const gamma = 1;
+  const lambda = 1;
+  const optimizer = new MiniBatchSGD({ miniBatchSize: 5, epochs: 10 });
+  const policy = new Policy();
   const stateValueFunction = new StateValueFunction();
-  const stateTraces = new StateTraces();
-  const stochasticPolicy = new Policy();
-  const policyTraces = new PolicyTraces();
-  const lambda = 0.5;
 
-  const agent = new ActorCritic({
-    stateValueFunction,
-    stateTraces,
-    stochasticPolicy,
-    policyTraces,
+  const args = {
+    batchStrategy,
+    epsilon,
+    gamma,
     lambda,
-  });
+    optimizer,
+    policy,
+    stateValueFunction,
+  };
+
+  const agent = new PPO(args);
 
   const environment = new Environment();
 
   environment.getObservation
     .mockReturnValue(undefined)
     .mockReturnValueOnce('state1')
-    .mockReturnValueOnce('state2');
+    .mockReturnValueOnce('state2')
+    .mockReturnValueOnce('state3');
 
   environment.getReward.mockReturnValue(10);
 
   environment.isTerminated.mockReturnValue(true).mockReturnValueOnce(false);
 
-  stochasticPolicy.chooseAction
+  policy.chooseAction
     .mockReturnValue(undefined)
     .mockReturnValueOnce('action1')
-    .mockReturnValueOnce('action2');
+    .mockReturnValueOnce('action2')
+    .mockReturnValueOnce('action3');
+
+  policy.probability
+    .mockReturnValue(0.5);
+
+  policy.gradient
+    .mockReturnValue([1]);
 
   stateValueFunction.call.mockImplementation((state) => {
     if (state === 'state1') return 1;
     if (state === 'state2') return 2;
+    if (state === 'state3') return 3;
     throw new Error('Unknown state');
   });
 
   return {
     agent,
-    stateValueFunction,
-    stateTraces,
-    stochasticPolicy,
-    policyTraces,
+    args,
     environment,
-    lambda,
   };
 };
 
-test.skip('newEpisode', () => {
+test('newEpisode', () => {
   const {
-    agent, policyTraces, stateTraces, environment,
+    agent, environment,
   } = initialize();
   agent.newEpisode(environment);
-  expect(stateTraces.reset).toHaveBeenCalled();
-  expect(policyTraces.reset).toHaveBeenCalled();
 });
 
-test.skip('act', () => {
+test('records histories', () => {
   const {
-    agent, policyTraces, stateTraces, environment, lambda,
+    agent, environment,
   } = initialize();
 
-  agent.newEpisode(environment);
-  agent.act();
-
-  expect(environment.dispatch).lastCalledWith('action1');
-  expect(stateTraces.record).lastCalledWith('state1');
-  expect(stateTraces.update).lastCalledWith(11);
-  expect(stateTraces.decay).lastCalledWith(lambda);
-  expect(policyTraces.record).lastCalledWith('state1', 'action1');
-  expect(policyTraces.update).lastCalledWith(11);
-  expect(policyTraces.decay).lastCalledWith(lambda);
-});
-
-test.skip('terminal state', () => {
-  const {
-    agent, policyTraces, stateTraces, environment, lambda,
-  } = initialize();
+  agent.update = jest.fn(agent.update.bind(agent));
 
   agent.newEpisode(environment);
   agent.act();
   agent.act();
 
-  expect(environment.dispatch).lastCalledWith('action2');
-  expect(stateTraces.record).lastCalledWith('state2');
-  expect(stateTraces.update).lastCalledWith(8);
-  expect(stateTraces.decay).lastCalledWith(lambda);
-  expect(policyTraces.record).lastCalledWith('state2', 'action2');
-  expect(policyTraces.update).lastCalledWith(8);
-  expect(policyTraces.decay).lastCalledWith(lambda);
+  expect(agent.update).not.toHaveBeenCalled();
+  expect(agent.history).toEqual([
+    {
+      action: 'action1',
+      actionProbability: 0.5,
+      reward: 10,
+      state: 'state1',
+      terminal: false,
+      value: 1,
+    },
+    {
+      action: 'action2',
+      actionProbability: 0.5,
+      reward: 10,
+      state: 'state2',
+      terminal: true,
+      value: 2,
+    },
+  ]);
 });
 
+test('updates when appropriate', () => {
+  const {
+    agent, environment,
+  } = initialize();
 
-test('computes advantages', () => {
-  const stateValueFunction = {
-    call: state => state * 2,
-  };
+  agent.update = jest.fn();
 
-  const agent = new PPO({
-    ...args,
-    stateValueFunction,
+  agent.newEpisode(environment);
+  agent.act();
+  agent.act();
+  agent.act();
+
+  expect(agent.update).toHaveBeenCalled();
+  expect(agent.history).toEqual([]);
+});
+
+describe('update', () => {
+  const history = [
+    {
+      action: 'action1',
+      actionProbability: 0.5,
+      reward: 1,
+      state: 'state1',
+      terminal: false,
+      value: 0,
+      tdError: 11,
+      advantage: 1,
+    },
+    {
+      action: 'action2',
+      actionProbability: 0.5,
+      reward: 0,
+      state: 'state2',
+      terminal: false,
+      value: 10,
+      tdError: -10,
+      advantage: -10,
+    },
+    {
+      action: 'action2',
+      actionProbability: 0.5,
+      reward: 0,
+      state: 'state2',
+      terminal: true,
+      value: 100,
+      tdError: undefined,
+      advantage: 0,
+    },
+  ];
+
+  test('computes td errors', () => {
+    const { agent } = initialize();
+    agent.history = history.map(({ ...params }) => ({ ...params, tdError: undefined }));
+    agent.computeTdErrors();
+    expect(agent.history).toEqual(history);
   });
-  agent.history = [1, 2, 3].map(state => ({
-    state,
-    reward: state,
-    value: stateValueFunction.call(state), // some value function
-    terminal: state === 3,
-  }));
-  agent.computeTdErrors();
-  agent.computeAdvantages();
-  expect(agent.history.map(({ advantage }) => advantage)).toEqual([4, 1, -3]);
+
+  test('computes advantages', () => {
+    const { agent } = initialize();
+    agent.history = history.map(({ ...params }) => ({ ...params, advantage: undefined }));
+    agent.computeAdvantages();
+    expect(agent.history).toEqual(history);
+  });
+
+  test('optimizers value function', () => {
+    const { agent, args: { stateValueFunction } } = initialize();
+    agent.history = history;
+    agent.optimizeValueFunction();
+    expect(stateValueFunction.update.mock.calls).toEqual([
+      ['state1', 11],
+      ['state2', -10],
+    ]);
+  });
+
+  test('optimizes policy', () => {
+    const { agent, args: { optimizer, policy } } = initialize();
+    jest.spyOn(optimizer, 'optimize');
+    agent.history = history;
+    agent.optimizePolicy();
+    expect(optimizer.optimize).toHaveBeenCalled();
+    expect(policy.updateParameters.mock.calls).toEqual(new Array(6).fill([[-1]]));
+  });
+
+  test('performs entire update', () => {
+    const { agent, args: { optimizer, policy, stateValueFunction } } = initialize();
+    jest.spyOn(optimizer, 'optimize');
+    agent.history = history.map(({ ...params }) => ({ ...params, tdError: undefined }));
+    agent.history = history.map(({ ...params }) => ({ ...params, advantage: undefined }));
+    agent.update();
+    expect(agent.history).toEqual(history);
+    expect(stateValueFunction.update.mock.calls).toEqual([
+      ['state1', 11],
+      ['state2', -10],
+    ]);
+    expect(policy.updateParameters.mock.calls).toEqual(new Array(6).fill([[-1]]));
+  });
+});
+
+describe('getSampleGradient', () => {
+  test('clipped', () => {
+    const { agent, args: { policy } } = initialize();
+    policy.probability.mockReturnValue(0.5);
+    policy.gradient.mockReturnValue([1, -1]);
+    const gradient = agent.getSampleGradient({
+      state: 'state1', action: 'action1', advantage: 10, actionProbability: 0.25,
+    });
+    expect(gradient).toBe(0);
+  });
+
+  test('unclipped', () => {
+    const { agent, args: { policy } } = initialize();
+    policy.probability.mockReturnValue(0.25);
+    policy.gradient.mockReturnValue([1, -1]);
+    const gradient = agent.getSampleGradient({
+      state: 'state1', action: 'action1', advantage: 10, actionProbability: 0.5,
+    });
+    expect(gradient).toEqual([20, -20]);
+  });
 });
 
 test('clips', () => {
   const agent = new PPO({
-    ...args,
+    ...defaultArgs,
     epsilon: 0.2,
   });
 
@@ -161,7 +263,7 @@ test('clips', () => {
 
 test('should clip', () => {
   const agent = new PPO({
-    ...args,
+    ...defaultArgs,
     epsilon: 0.2,
   });
 
