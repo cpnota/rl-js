@@ -1,7 +1,9 @@
 const math = require('mathjs');
+const Optimizer = require('.');
 
-module.exports = class MiniBatchStochasticGradientDescent {
+module.exports = class MiniBatchStochasticGradientDescent extends Optimizer {
   constructor({ miniBatchSize, epochs }) {
+    super();
     this.miniBatchSize = miniBatchSize;
     this.epochs = epochs;
   }

@@ -1,5 +1,8 @@
-module.exports = class Episodic {
+const BatchStrategy = require('.');
+
+module.exports = class Episodic extends BatchStrategy {
   constructor(episodes) {
+    super();
     if (!episodes) throw new Error('Constructor must be called with number of episodes');
     this.episodes = episodes;
     this.reset();
