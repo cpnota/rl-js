@@ -66,7 +66,7 @@ module.exports = class ProximalPolicyOptimization extends Agent {
   computeTdErrors() {
     this.history.forEach((step, t) => {
       if (step.terminal || !this.history[t + 1]) {
-        return; // cannot compute tdError
+        return;
       }
 
       const {
@@ -86,16 +86,26 @@ module.exports = class ProximalPolicyOptimization extends Agent {
   computeAdvantages() {
     const gamma = this.getGamma();
 
-    // compute the advantage from the initial state
-    // and then use this computation to iteratively
-    // compute the computation for the rest of the states.
-    // This is 2n instead of n^2
-    let advantage = this.history.reduce((discountedSum, { tdError = 0 }, t) => (
-      discountedSum + tdError * (gamma ** t)), 0);
+    const episodes = this.history.reduce((eps, step) => {
+      eps[eps.length - 1].push(step);
+      if (step.terminal) {
+        eps.push([]);
+      }
+      return eps;
+    }, [[]]);
 
-    this.history.forEach((step) => {
-      step.advantage = advantage; // eslint-disable-line no-param-reassign
-      advantage = (advantage - step.tdError) ** (1 / gamma);
+    episodes.forEach((episode) => {
+      // compute the advantage from the initial state
+      // and then use this computation to iteratively
+      // compute the computation for the rest of the states.
+      // This is 2n instead of n^2
+      let advantage = episode.reduce((discountedSum, { tdError = 0 }, t) => (
+        discountedSum + tdError * (gamma ** t)), 0);
+
+      episode.forEach((step) => {
+        step.advantage = advantage; // eslint-disable-line no-param-reassign
+        advantage = (advantage - step.tdError) ** (1 / gamma);
+      });
     });
   }
 

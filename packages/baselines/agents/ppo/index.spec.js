@@ -178,6 +178,26 @@ describe('update', () => {
       tdError: undefined,
       advantage: 0,
     },
+    {
+      action: 'action1',
+      actionProbability: 0.5,
+      reward: 5,
+      state: 'state1',
+      terminal: false,
+      value: 10,
+      tdError: -5,
+      advantage: -5,
+    },
+    {
+      action: 'action2',
+      actionProbability: 0.5,
+      reward: 20,
+      state: 'state2',
+      terminal: true,
+      value: 100,
+      tdError: undefined,
+      advantage: 0,
+    },
   ];
 
   test('computes td errors', () => {
@@ -201,6 +221,7 @@ describe('update', () => {
     expect(stateValueFunction.update.mock.calls).toEqual([
       ['state1', 11],
       ['state2', -10],
+      ['state1', -5],
     ]);
   });
 
@@ -210,7 +231,7 @@ describe('update', () => {
     agent.history = history;
     agent.optimizePolicy();
     expect(optimizer.optimize).toHaveBeenCalled();
-    expect(policy.updateParameters.mock.calls).toEqual(new Array(6).fill([[-1]]));
+    expect(policy.updateParameters.mock.calls).toEqual(new Array(10).fill([[-1]]));
   });
 
   test('performs entire update', () => {
@@ -223,8 +244,9 @@ describe('update', () => {
     expect(stateValueFunction.update.mock.calls).toEqual([
       ['state1', 11],
       ['state2', -10],
+      ['state1', -5],
     ]);
-    expect(policy.updateParameters.mock.calls).toEqual(new Array(6).fill([[-1]]));
+    expect(policy.updateParameters.mock.calls).toEqual(new Array(10).fill([[-1]]));
   });
 });
 
