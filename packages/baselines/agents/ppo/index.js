@@ -1,17 +1,37 @@
 const math = require('mathjs');
 
-module.exports = class ProximalPolicyOptimization {
+const {
+  Agent,
+  StateTraces,
+  StateValueFunction,
+  Policy,
+  PolicyTraces,
+} = require('@rl-js/interfaces');
+const checkInterface = require('check-interface');
+const check = require('check-types');
+const BatchStrategy = require('./batches');
+const Optimizer = require('./optimize');
+
+module.exports = class ProximalPolicyOptimization extends Agent {
   constructor({
-    policy, stateValueFunction, epsilon, batchStrategy, optimizer, lambda = 1, gamma = 1,
+    batchStrategy,
+    epsilon,
+    gamma = 1,
+    lambda = 1,
+    optimizer,
+    policy,
+    stateValueFunction,
   }) {
-    this.policy = policy;
-    this.v = stateValueFunction;
-    this.epsilon = epsilon;
-    this.batchStrategy = batchStrategy;
+    super();
+    this.batchStrategy = checkInterface(batchStrategy, BatchStrategy);
+    this.epsilon = check.assert.number(epsilon);
+    this.gamma = check.assert.number(gamma);
+    this.lambda = check.assert.number(lambda);
+    this.optimizer = checkInterface(optimizer, Optimizer);
+    this.policy = checkInterface(policy, Policy);
+    this.v = checkInterface(stateValueFunction, StateValueFunction);
+
     this.history = [];
-    this.optimizer = optimizer;
-    this.lambda = lambda;
-    this.gamma = gamma;
   }
 
   newEpisode(environment) {
