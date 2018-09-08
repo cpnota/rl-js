@@ -8,6 +8,7 @@ module.exports = new AgentSuite({
     require('./actor-critic'),
     require('./cma-es'),
     require('./nac-td'),
+    require('./ppo'),
   ],
   environmentType: ContinuousEnvironment,
 });

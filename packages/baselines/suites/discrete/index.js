@@ -8,6 +8,7 @@ module.exports = new AgentSuite({
     require('./actor-critic-lambda'),
     require('./cma-es'),
     require('./nac-td'),
+    require('./ppo'),
     require('./q-lambda'),
     require('./reinforce'),
     require('./sarsa-lambda'),
