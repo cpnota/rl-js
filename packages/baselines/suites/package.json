@@ -1,6 +1,6 @@
 {
   "name": "@rl-js/baseline-agent-suites",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Baseline Agent suites for rl-js: Reinforcement Learning in JavaScript",
   "main": "index.js",
   "keywords": [
@@ -9,11 +9,11 @@
   "author": "cpnota@gmail.com",
   "license": "MIT",
   "dependencies": {
-    "@rl-js/baseline-agents": "^0.8.0",
-    "@rl-js/baseline-function-approximators": "^0.8.0",
-    "@rl-js/baseline-policies": "^0.8.0",
-    "@rl-js/configuration": "^0.8.0",
-    "@rl-js/interfaces": "^0.8.0"
+    "@rl-js/baseline-agents": "^0.9.0",
+    "@rl-js/baseline-function-approximators": "^0.9.0",
+    "@rl-js/baseline-policies": "^0.9.0",
+    "@rl-js/configuration": "^0.9.0",
+    "@rl-js/interfaces": "^0.9.0"
   },
   "jest": {
     "testEnvironment": "node"

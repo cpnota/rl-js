@@ -1,6 +1,6 @@
 {
   "name": "@rl-js/baseline-policies",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Reinforcement learning action selection policies in JavaScript",
   "homepage": "https://github.com/cpnota/rl-js#readme",
   "license": "MIT",
@@ -15,7 +15,7 @@
     "url": "git+https://github.com/cpnota/rl-js.git"
   },
   "dependencies": {
-    "@rl-js/interfaces": "^0.8.0",
+    "@rl-js/interfaces": "^0.9.0",
     "gaussian": "^1.1.0",
     "mathjs": "^3.20.2"
   },
