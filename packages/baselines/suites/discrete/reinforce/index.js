@@ -64,7 +64,7 @@ module.exports = new AgentBuilder({
 
     const stateValueFunction = new LinearStateValue({
       basis,
-      alpha: hyperparameters[ALPHA_PI],
+      alpha: hyperparameters[ALPHA_V],
     });
 
     const stateTraces = new AccumulatingTraces(stateValueFunction);

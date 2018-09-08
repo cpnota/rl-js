@@ -67,13 +67,11 @@ module.exports = new AgentBuilder({
       order: hyperparameters[ORDER],
     });
 
-    const functionApproximator = new LinearStateValue({
-      basis,
-      alpha: hyperparameters[ALPHA_PI],
-    });
-
     const policy = new Gaussian({
-      functionApproximator,
+      functionApproximator: new LinearStateValue({
+        basis,
+        alpha: hyperparameters[ALPHA_PI],
+      }),
       variance: hyperparameters[VARIANCE],
       min,
       max,
