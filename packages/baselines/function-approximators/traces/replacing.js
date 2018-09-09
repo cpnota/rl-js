@@ -1,4 +1,10 @@
-const math = require('mathjs');
+const multiply = (scalar, vector) => {
+  const result = new Array(vector.length);
+  for (let i = 0; i < vector.length; i += 1) {
+    result[i] = scalar * vector[i];
+  }
+  return result;
+};
 
 module.exports = class AccumulatingTraces {
   constructor(functionApproximator) {
@@ -13,24 +19,24 @@ module.exports = class AccumulatingTraces {
       const trace = this.traces[i];
       const sum = trace + partial;
 
-      if (math.abs(sum) < math.max(math.abs(trace), math.abs(partial))) {
+      if (Math.abs(sum) < Math.max(Math.abs(trace), Math.abs(partial))) {
         return sum;
       }
 
-      return math.abs(trace) > math.abs(partial) ? trace : partial;
+      return Math.abs(trace) > Math.abs(partial) ? trace : partial;
     });
     return this;
   }
 
   update(error) {
     this.functionApproximator.updateParameters(
-      math.multiply(error, this.traces),
+      multiply(error, this.traces),
     );
     return this;
   }
 
   decay(amount) {
-    this.traces = math.multiply(amount, this.traces);
+    this.traces = multiply(amount, this.traces);
     return this;
   }
 

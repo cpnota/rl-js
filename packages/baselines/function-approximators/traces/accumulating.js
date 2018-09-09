@@ -1,5 +1,3 @@
-const math = require('mathjs');
-
 module.exports = class AccumulatingTraces {
   constructor(functionApproximator) {
     this.functionApproximator = functionApproximator;
@@ -8,22 +6,23 @@ module.exports = class AccumulatingTraces {
   }
 
   record(...args) {
-    this.traces = math.add(
-      this.functionApproximator.gradient(...args),
-      this.traces,
-    );
+    const gradient = this.functionApproximator.gradient(...args);
+    for (let i = 0; i < this.traces.length; i += 1) {
+      this.traces[i] += gradient[i];
+    }
     return this;
   }
 
   update(error) {
-    this.functionApproximator.updateParameters(
-      math.multiply(error, this.traces),
-    );
+    const direction = this.traces.map(trace => trace * error);
+    this.functionApproximator.updateParameters(direction);
     return this;
   }
 
   decay(amount) {
-    this.traces = math.multiply(amount, this.traces);
+    for (let i = 0; i < this.traces.length; i += 1) {
+      this.traces[i] *= amount;
+    }
     return this;
   }
 
