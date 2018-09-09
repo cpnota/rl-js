@@ -4,6 +4,7 @@ configuration.registerEnvironmentSuite(require('@rl-js/environments-classic-cont
 
 const TIMESTEPS = 2000;
 
+/* eslint-disable no-console */
 console.time('benchmark');
 configuration.listAgentSuites().forEach((agentSuite) => {
   const environmentType = agentSuite.getEnvironmentType();
