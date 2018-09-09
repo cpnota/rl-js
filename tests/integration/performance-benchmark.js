@@ -2,8 +2,9 @@ const configuration = require('@rl-js/configuration');
 configuration.registerAgentSuite(require('@rl-js/baseline-agent-suites'));
 configuration.registerEnvironmentSuite(require('@rl-js/environments-classic-control'));
 
-const TIMESTEPS = 500;
+const TIMESTEPS = 2000;
 
+console.time('benchmark');
 configuration.listAgentSuites().forEach((agentSuite) => {
   const environmentType = agentSuite.getEnvironmentType();
   const environmentSuites = configuration.listEnvironmentSuites(environmentType);
@@ -30,10 +31,11 @@ configuration.listAgentSuites().forEach((agentSuite) => {
           }
           console.timeEnd(name);
         } catch (error) {
-          console.error(error);
+          // console.error(error);
           console.timeEnd(name);
         }
       });
     });
   });
 });
+console.timeEnd('benchmark');

@@ -10,8 +10,8 @@ const cachify = FaConstructor => class CachifiedFA extends FunctionApproximator 
 
   call(args) {
     const cached = this.cache.get(args);
-    const output = this.fa.call(args);
     if (cached != null) return cached;
+    const output = this.fa.call(args);
     this.cache.set(args, output);
     return output;
   }
