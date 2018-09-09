@@ -1,6 +1,5 @@
 const checkInterface = require('check-interface');
 const FunctionApproximator = require('@rl-js/interfaces/function-approximator');
-const math = require('mathjs');
 const Basis = require('./basis');
 
 class LinearFunctionApproximator extends FunctionApproximator {
@@ -17,7 +16,13 @@ class LinearFunctionApproximator extends FunctionApproximator {
   }
 
   call(args) {
-    const result = math.dot(this.weights, this.basis.features(args));
+    let result = 0;
+    const features = this.basis.features(args);
+
+    for (let i = 0; i < this.weights.length; i += 1) {
+      result += this.weights[i] * features[i];
+    }
+
     if (Number.isNaN(result)) {
       throw new Error(
         `Result was not a number! ${JSON.stringify({
@@ -26,6 +31,7 @@ class LinearFunctionApproximator extends FunctionApproximator {
         })} `,
       );
     }
+
     return result;
   }
 
@@ -36,10 +42,11 @@ class LinearFunctionApproximator extends FunctionApproximator {
         error,
       })}`);
     }
-    this.weights = math.add(
-      this.weights,
-      math.multiply(this.alpha, error, this.basis.features(args)),
-    );
+
+    const features = this.basis.features(args);
+    for (let i = 0; i < this.weights.length; i += 1) {
+      this.weights[i] += this.alpha * error * features[i];
+    }
     return this;
   }
 
@@ -57,8 +64,10 @@ class LinearFunctionApproximator extends FunctionApproximator {
     return this;
   }
 
-  updateParameters(errors) {
-    this.weights = math.add(this.weights, math.multiply(this.alpha, errors));
+  updateParameters(direction) {
+    for (let i = 0; i < this.weights.length; i += 1) {
+      this.weights[i] += this.alpha * direction[i];
+    }
     return this;
   }
 }
