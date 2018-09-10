@@ -1,6 +1,6 @@
 {
   "name": "@rl-js/interfaces",
-  "version": "0.9.0",
+  "version": "0.9.2",
   "description": "Core interfaces for rl-js: Reinforcement Learning in JavaScript",
   "homepage": "https://github.com/cpnota/rl-js-interfaces",
   "license": "MIT",
