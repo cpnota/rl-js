@@ -1,6 +1,6 @@
 const math = require('mathjs');
-const Optimizer = require('.');
 const { vector } = require('@rl-js/math');
+const Optimizer = require('.');
 
 module.exports = class MiniBatchStochasticGradientDescent extends Optimizer {
   constructor({ miniBatchSize, epochs }) {
