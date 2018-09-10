@@ -15,5 +15,6 @@
   "bugs": {
     "url": "https://github.com/cpnota/rl-js/issues"
   },
-  "homepage": "https://github.com/cpnota/rl-js#readme"
+  "homepage": "https://github.com/cpnota/rl-js#readme",
+  "gitHead": "ac5a2512ee9dd5a9076eadb3ec5416d04f1da227"
 }
