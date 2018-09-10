@@ -1,6 +1,6 @@
 {
   "name": "@rl-js/redux-mdp",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "An interface for buildings MDPs using Redux, compatible with the rl-js framework.",
   "homepage": "https://github.com/cpnota/redux-mdp",
   "license": "MIT",
@@ -15,7 +15,7 @@
     "url": "git+https://github.com/cpnota/redux-mdp.git"
   },
   "dependencies": {
-    "@rl-js/interfaces": "^0.9.2",
+    "@rl-js/interfaces": "^0.9.3",
     "redux": "^4.0.0"
   },
   "gitHead": "ac5a2512ee9dd5a9076eadb3ec5416d04f1da227"

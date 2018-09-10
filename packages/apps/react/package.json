@@ -1,10 +1,10 @@
 {
   "name": "@rl-js/react-app",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "dependencies": {
-    "@rl-js/baseline-agent-suites": "^0.9.2",
-    "@rl-js/configuration": "^0.9.2",
-    "@rl-js/environments-classic-control": "^0.9.2",
+    "@rl-js/baseline-agent-suites": "^0.9.3",
+    "@rl-js/configuration": "^0.9.3",
+    "@rl-js/environments-classic-control": "^0.9.3",
     "js-combinatorics": "^0.5.3",
     "lodash": "^4.17.10",
     "mathjs": "^5.0.4",
