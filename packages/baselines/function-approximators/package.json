@@ -1,6 +1,6 @@
 {
   "name": "@rl-js/baseline-function-approximators",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "Reinforcement learning function approximators in JavaScript",
   "homepage": "https://github.com/cpnota/rl-js#readme",
   "license": "MIT",
