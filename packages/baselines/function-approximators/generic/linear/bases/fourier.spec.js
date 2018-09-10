@@ -18,6 +18,8 @@ it('computes features', () => {
   expect(features[6]).toBeCloseTo(-0.588, 3);
 });
 
+const removePI = matr => matr.map(arr => arr.map(v => v / Math.PI));
+
 describe('c', () => {
   it('computes c correctly for 2x0', () => {
     const basis = new FourierBasis({
@@ -34,7 +36,7 @@ describe('c', () => {
       order: 1,
     });
 
-    expect(basis.c).toEqual([[0, 0], [1, 0], [0, 1], [1, 1]]);
+    expect(removePI(basis.c)).toEqual([[0, 0], [1, 0], [0, 1], [1, 1]]);
   });
 
   it('computes c correctly for 2x2', () => {
@@ -43,7 +45,7 @@ describe('c', () => {
       order: 2,
     });
 
-    expect(basis.c).toEqual([
+    expect(removePI(basis.c)).toEqual([
       [0, 0],
       [1, 0],
       [2, 0],
@@ -62,7 +64,7 @@ describe('c', () => {
       order: 1,
     });
 
-    expect(basis.c).toEqual([
+    expect(removePI(basis.c)).toEqual([
       [0, 0, 0],
       [1, 0, 0],
       [0, 1, 0],
