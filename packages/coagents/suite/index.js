@@ -6,6 +6,7 @@ module.exports = new AgentSuite({
   id: 'coagents-2-layer-lfa',
   builders: [
     require('./global-critic'),
+    require('./local-critic'),
   ],
   environmentType: DiscreteEnvironment,
 });
