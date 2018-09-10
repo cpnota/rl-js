@@ -7,6 +7,7 @@ module.exports = new AgentSuite({
   builders: [
     require('./global-critic'),
     require('./local-critic'),
+    require('./structural-advantage'),
   ],
   environmentType: DiscreteEnvironment,
 });
