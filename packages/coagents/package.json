@@ -13,6 +13,15 @@
   },
   "author": "cpnota@gmail.com",
   "license": "UNLICENSED",
+  "dependencies": {
+    "@rl-js/baseline-agents": "^0.9.3",
+    "@rl-js/baseline-function-approximators": "^0.9.3",
+    "@rl-js/baseline-policies": "^0.9.3",
+    "@rl-js/configuration": "^0.9.3",
+    "@rl-js/interfaces": "^0.9.3",
+    "check-interface": "^1.1.1",
+    "check-types": "^7.4.0"
+  },
   "bugs": {
     "url": "https://github.com/cpnota/rl-js/issues"
   },
