@@ -1,4 +1,4 @@
-const math = require('mathjs');
+const { vector } = require('@rl-js/math');
 
 const {
   Agent,
@@ -134,10 +134,9 @@ module.exports = class ProximalPolicyOptimization extends Agent {
 
     return this.shouldClip(importanceWeight, advantage)
       ? 0
-      : math.multiply(
+      : vector.scale(
+        advantage / actionProbability,
         this.policy.gradient(state, action),
-        1 / actionProbability,
-        advantage,
       );
   }
 

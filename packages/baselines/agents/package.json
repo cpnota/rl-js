@@ -17,6 +17,7 @@
   "dependencies": {
     "@rl-js/baseline-function-approximators": "^0.9.0",
     "@rl-js/interfaces": "^0.9.0",
+    "@rl-js/math": "^0.0.1",
     "check-interface": "^1.1.1",
     "check-types": "^7.4.0",
     "gaussian": "^1.1.0",
