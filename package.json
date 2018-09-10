@@ -15,7 +15,7 @@
   },
   "scripts": {
     "coverage": "jest --coverage",
-    "lint": "eslint **/*.js",
+    "lint": "eslint '**/*.js'",
     "format": "npm run lint -- --fix",
     "publish": "lerna bootstrap && npm run validate && lerna publish",
     "validate": "npm run format && npm run test",

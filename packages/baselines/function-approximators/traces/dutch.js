@@ -1,4 +1,4 @@
-const math = require('mathjs');
+const { vector } = require('@rl-js/math');
 
 module.exports = class DutchTraces {
   constructor(functionApproximator, { alpha } = {}) {
@@ -11,11 +11,11 @@ module.exports = class DutchTraces {
 
   record(...args) {
     const gradient = this.functionApproximator.gradient(...args);
-    this.traces = math.add(
+    vector.inplace.add(
       this.traces,
-      math.multiply(
+      vector.scale(
+        1 - this.alpha * vector.dot(this.traces, gradient),
         gradient,
-        1 - math.multiply(this.alpha, this.traces, gradient),
       ),
     );
     return this;
@@ -23,13 +23,13 @@ module.exports = class DutchTraces {
 
   update(error) {
     this.functionApproximator.updateParameters(
-      math.multiply(error, this.traces),
+      vector.scale(error, this.traces),
     );
     return this;
   }
 
   decay(amount) {
-    this.traces = math.multiply(amount, this.traces);
+    vector.inplace.scale(amount, this.traces);
     return this;
   }
 

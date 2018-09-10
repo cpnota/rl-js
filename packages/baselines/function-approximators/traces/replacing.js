@@ -1,4 +1,4 @@
-const math = require('mathjs');
+const { vector } = require('@rl-js/math');
 
 module.exports = class AccumulatingTraces {
   constructor(functionApproximator) {
@@ -13,24 +13,24 @@ module.exports = class AccumulatingTraces {
       const trace = this.traces[i];
       const sum = trace + partial;
 
-      if (math.abs(sum) < math.max(math.abs(trace), math.abs(partial))) {
+      if (Math.abs(sum) < Math.max(Math.abs(trace), Math.abs(partial))) {
         return sum;
       }
 
-      return math.abs(trace) > math.abs(partial) ? trace : partial;
+      return Math.abs(trace) > Math.abs(partial) ? trace : partial;
     });
     return this;
   }
 
   update(error) {
     this.functionApproximator.updateParameters(
-      math.multiply(error, this.traces),
+      vector.scale(error, this.traces),
     );
     return this;
   }
 
   decay(amount) {
-    this.traces = math.multiply(amount, this.traces);
+    vector.inplace.scale(amount, this.traces);
     return this;
   }
 

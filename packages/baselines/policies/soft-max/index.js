@@ -1,5 +1,6 @@
 const Policy = require('@rl-js/interfaces/policy');
 const math = require('mathjs');
+const { vector } = require('@rl-js/math');
 
 class SoftMax extends Policy {
   constructor({
@@ -50,7 +51,7 @@ class SoftMax extends Policy {
 
   update(state, action, error) {
     const derivative = this.gradient(state, action);
-    return this.updateParameters(math.multiply(error, derivative));
+    return this.updateParameters(vector.scale(error, derivative));
   }
 
   gradient(state, a) {
@@ -61,14 +62,14 @@ class SoftMax extends Policy {
       const probability = probabilities[index];
       const value = action === a ? 1 - probability : -probability;
       const gradient = this.getStateValueFunction(action).gradient(state);
-      result.push(...math.multiply(value, gradient));
+      result.push(...vector.scale(value, gradient));
     });
 
     return result;
   }
 
   trueGradient(state, action) {
-    return math.multiply(
+    return vector.scale(
       this.probability(state, action),
       this.gradient(state, action),
     );
@@ -93,9 +94,9 @@ class SoftMax extends Policy {
   }
 
   updateParameters(errors) {
-    const newParameters = math.add(
+    const newParameters = vector.add(
       this.getParameters(),
-      math.multiply(this.alpha, errors),
+      vector.scale(this.alpha, errors),
     );
     return this.setParameters(newParameters);
   }

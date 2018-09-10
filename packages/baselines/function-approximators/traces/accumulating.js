@@ -1,4 +1,4 @@
-const math = require('mathjs');
+const { vector } = require('@rl-js/math');
 
 module.exports = class AccumulatingTraces {
   constructor(functionApproximator) {
@@ -8,22 +8,19 @@ module.exports = class AccumulatingTraces {
   }
 
   record(...args) {
-    this.traces = math.add(
-      this.functionApproximator.gradient(...args),
-      this.traces,
-    );
+    const gradient = this.functionApproximator.gradient(...args);
+    vector.inplace.add(this.traces, gradient);
     return this;
   }
 
   update(error) {
-    this.functionApproximator.updateParameters(
-      math.multiply(error, this.traces),
-    );
+    const direction = vector.scale(error, this.traces);
+    this.functionApproximator.updateParameters(direction);
     return this;
   }
 
   decay(amount) {
-    this.traces = math.multiply(amount, this.traces);
+    vector.inplace.scale(amount, this.traces);
     return this;
   }
 

@@ -1,5 +1,6 @@
 const math = require('mathjs');
 const Optimizer = require('.');
+const { vector } = require('@rl-js/math');
 
 module.exports = class MiniBatchStochasticGradientDescent extends Optimizer {
   constructor({ miniBatchSize, epochs }) {
@@ -15,7 +16,11 @@ module.exports = class MiniBatchStochasticGradientDescent extends Optimizer {
       let gradient = 0;
       for (let i = 0; i < this.miniBatchSize; i += 1) {
         const sample = samples[currentSampleIndex];
-        gradient = math.add(gradient, computeGradient(sample));
+        if (gradient) {
+          vector.inplace.add(gradient, computeGradient(sample));
+        } else {
+          gradient = computeGradient(sample);
+        }
         count += 1;
         currentSampleIndex += 1;
         if (!samples[currentSampleIndex]) currentSampleIndex = 0;
@@ -28,8 +33,8 @@ module.exports = class MiniBatchStochasticGradientDescent extends Optimizer {
         // or there was some error.
         return;
       }
-      const direction = math.divide(gradient, norm);
-      update(direction);
+      vector.inplace.scale(1 / norm, gradient);
+      update(gradient);
     }
   }
 };
