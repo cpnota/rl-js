@@ -18,7 +18,7 @@ it('computes features', () => {
   expect(features[6]).toBeCloseTo(-0.588, 3);
 });
 
-const toNormal = matr => matr.map(arr => arr.map(v => v / Math.PI));
+const removePI = matr => matr.map(arr => arr.map(v => v / Math.PI));
 
 describe('c', () => {
   it('computes c correctly for 2x0', () => {
@@ -36,7 +36,7 @@ describe('c', () => {
       order: 1,
     });
 
-    expect(toNormal(basis.c)).toEqual([[0, 0], [1, 0], [0, 1], [1, 1]]);
+    expect(removePI(basis.c)).toEqual([[0, 0], [1, 0], [0, 1], [1, 1]]);
   });
 
   it('computes c correctly for 2x2', () => {
@@ -45,7 +45,7 @@ describe('c', () => {
       order: 2,
     });
 
-    expect(toNormal(basis.c)).toEqual([
+    expect(removePI(basis.c)).toEqual([
       [0, 0],
       [1, 0],
       [2, 0],
@@ -64,7 +64,7 @@ describe('c', () => {
       order: 1,
     });
 
-    expect(toNormal(basis.c)).toEqual([
+    expect(removePI(basis.c)).toEqual([
       [0, 0, 0],
       [1, 0, 0],
       [0, 1, 0],
