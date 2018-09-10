@@ -1,4 +1,5 @@
 const math = require('mathjs');
+const { vector } = require('@rl-js/math');
 const { cartesianProduct } = require('js-combinatorics');
 const Basis = require('../basis');
 const Cache = require('../../../utils/cache');
@@ -27,8 +28,9 @@ class FourierBasis extends Basis {
     const features = [];
     /* eslint-disable camelcase */
     this.c.forEach((c_i) => {
-      features.push(Math.cos(Math.PI * math.dot(c_i, x)));
-      features.push(Math.sin(Math.PI * math.dot(c_i, x)));
+      const v = vector.dot(c_i, x);
+      features.push(Math.cos(v));
+      features.push(Math.sin(v));
     });
     return features;
   }
@@ -38,7 +40,7 @@ class FourierBasis extends Basis {
   }
 
   computeC() {
-    const powerRange = math.range(0, this.order + 1).toArray();
+    const powerRange = math.range(0, this.order + 1).toArray().map(x => Math.PI * x);
     const possiblePowers = new Array(this.variables).fill(powerRange);
     return cartesianProduct(...possiblePowers).toArray();
   }
