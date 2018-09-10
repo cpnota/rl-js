@@ -36,7 +36,7 @@ const inplace = {
     }
     return vector;
   },
-  update: (vector, direction, alpha) => {
+  update: (alpha, vector, direction) => {
     for (let i = 0; i < vector.length; i += 1) {
       vector[i] += alpha * direction[i];
     }

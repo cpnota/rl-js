@@ -1,10 +1,4 @@
-const multiply = (scalar, vector) => {
-  const result = new Array(vector.length);
-  for (let i = 0; i < vector.length; i += 1) {
-    result[i] = scalar * vector[i];
-  }
-  return result;
-};
+const { vector } = require('@rl-js/math');
 
 module.exports = class AccumulatingTraces {
   constructor(functionApproximator) {
@@ -30,13 +24,13 @@ module.exports = class AccumulatingTraces {
 
   update(error) {
     this.functionApproximator.updateParameters(
-      multiply(error, this.traces),
+      vector.scale(error, this.traces),
     );
     return this;
   }
 
   decay(amount) {
-    this.traces = multiply(amount, this.traces);
+    vector.inplace.scale(amount, this.traces);
     return this;
   }
 

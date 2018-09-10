@@ -33,6 +33,6 @@ test('updates a vector in a particular direction', () => {
   const v = [1, 2, 3];
   const direction = [10, 10, 10];
   const alpha = 0.1;
-  vector.inplace.update(v, direction, alpha);
+  vector.inplace.update(alpha, v, direction);
   expect(v).toEqual([2, 3, 4]);
 });

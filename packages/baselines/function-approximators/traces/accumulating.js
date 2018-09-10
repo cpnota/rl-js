@@ -1,3 +1,5 @@
+const { vector } = require('@rl-js/math');
+
 module.exports = class AccumulatingTraces {
   constructor(functionApproximator) {
     this.functionApproximator = functionApproximator;
@@ -7,22 +9,18 @@ module.exports = class AccumulatingTraces {
 
   record(...args) {
     const gradient = this.functionApproximator.gradient(...args);
-    for (let i = 0; i < this.traces.length; i += 1) {
-      this.traces[i] += gradient[i];
-    }
+    vector.inplace.add(this.traces, gradient);
     return this;
   }
 
   update(error) {
-    const direction = this.traces.map(trace => trace * error);
+    const direction = vector.scale(error, this.traces);
     this.functionApproximator.updateParameters(direction);
     return this;
   }
 
   decay(amount) {
-    for (let i = 0; i < this.traces.length; i += 1) {
-      this.traces[i] *= amount;
-    }
+    vector.inplace.scale(amount, this.traces);
     return this;
   }
 

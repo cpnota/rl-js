@@ -1,26 +1,4 @@
-const multiply = (scalar, vector) => {
-  const result = new Array(vector.length);
-  for (let i = 0; i < vector.length; i += 1) {
-    result[i] = scalar * vector[i];
-  }
-  return result;
-};
-
-/* eslint-disable no-param-reassign */
-const add = (v1, v2) => {
-  for (let i = 0; i < v1.length; i += 1) {
-    v1[i] += v2[i];
-  }
-  return v1;
-};
-
-const dot = (v1, v2) => {
-  let result = 0;
-  for (let i = 0; i < v1.length; i += 1) {
-    result += v1[i] * v2[i];
-  }
-  return result;
-};
+const { vector } = require('@rl-js/math');
 
 module.exports = class DutchTraces {
   constructor(functionApproximator, { alpha } = {}) {
@@ -33,10 +11,10 @@ module.exports = class DutchTraces {
 
   record(...args) {
     const gradient = this.functionApproximator.gradient(...args);
-    this.traces = add(
+    vector.inplace.add(
       this.traces,
-      multiply(
-        1 - this.alpha * dot(this.traces, gradient),
+      vector.scale(
+        1 - this.alpha * vector.dot(this.traces, gradient),
         gradient,
       ),
     );
@@ -45,13 +23,13 @@ module.exports = class DutchTraces {
 
   update(error) {
     this.functionApproximator.updateParameters(
-      multiply(error, this.traces),
+      vector.scale(error, this.traces),
     );
     return this;
   }
 
   decay(amount) {
-    this.traces = multiply(amount, this.traces);
+    vector.inplace.scale(amount, this.traces);
     return this;
   }
 

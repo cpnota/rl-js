@@ -1,5 +1,6 @@
 const checkInterface = require('check-interface');
 const FunctionApproximator = require('@rl-js/interfaces/function-approximator');
+const { vector } = require('@rl-js/math');
 const Basis = require('./basis');
 
 class LinearFunctionApproximator extends FunctionApproximator {
@@ -16,12 +17,7 @@ class LinearFunctionApproximator extends FunctionApproximator {
   }
 
   call(args) {
-    let result = 0;
-    const features = this.basis.features(args);
-
-    for (let i = 0; i < this.weights.length; i += 1) {
-      result += this.weights[i] * features[i];
-    }
+    const result = vector.dot(this.weights, this.basis.features(args));
 
     if (Number.isNaN(result)) {
       throw new Error(
@@ -43,10 +39,7 @@ class LinearFunctionApproximator extends FunctionApproximator {
       })}`);
     }
 
-    const features = this.basis.features(args);
-    for (let i = 0; i < this.weights.length; i += 1) {
-      this.weights[i] += this.alpha * error * features[i];
-    }
+    vector.inplace.update(this.alpha * error, this.weights, this.basis.features(args));
     return this;
   }
 
@@ -65,9 +58,7 @@ class LinearFunctionApproximator extends FunctionApproximator {
   }
 
   updateParameters(direction) {
-    for (let i = 0; i < this.weights.length; i += 1) {
-      this.weights[i] += this.alpha * direction[i];
-    }
+    vector.inplace.update(this.alpha, this.weights, direction);
     return this;
   }
 }
