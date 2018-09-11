@@ -29,7 +29,6 @@ module.exports = class GateCoagent extends Agent {
 
   act() {
     this.gateAction = this.gate.chooseAction(this.state);
-    console.log(this.gate.getProbabilities(this.state));
     if (this.gateAction) {
       this.action = this.policy.chooseAction(this.state);
     }
