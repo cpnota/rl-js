@@ -7,7 +7,7 @@ const {
 const SoftMax = require('@rl-js/baseline-policies/soft-max');
 const LinearStateValue = require('@rl-js/baseline-function-approximators/state-value/linear');
 const Fourier = require('@rl-js/baseline-function-approximators/generic/linear/bases/fourier');
-const Network = require('../../networks/structural-advantage');
+const Network = require('../../../networks/local-critic');
 
 const ALPHA_V = 'alpha_v';
 const ALPHA_PI = 'alpha_pi';
@@ -15,20 +15,20 @@ const INPUTS = 'inputs';
 const ORDER = 'order';
 
 module.exports = new AgentBuilder({
-  name: 'Structural Advantage',
-  id: 'structural-advantage',
+  name: 'Local Critic',
+  id: 'local-critic',
   hyperparameters: [
     new Exponential({
       name: ALPHA_V,
       min: 0.00001,
       max: 0.3,
-      default: 0.001,
+      default: 0.01,
     }),
     new Exponential({
       name: ALPHA_PI,
       min: 0.00001,
       max: 0.3,
-      default: 0.001,
+      default: 0.01,
     }),
     new Discrete({
       name: INPUTS,
@@ -59,12 +59,14 @@ module.exports = new AgentBuilder({
       alpha: hyperparameters[ALPHA_PI],
     }));
 
+    const outputBasis = new Fourier({
+      variables: hyperparameters[INPUTS],
+      order: hyperparameters[ORDER],
+    });
+
     const outputNode = new SoftMax({
       createStateValueFunction: () => new LinearStateValue({
-        basis: new Fourier({
-          variables: hyperparameters[INPUTS],
-          order: hyperparameters[ORDER],
-        }),
+        basis: outputBasis,
         alpha: hyperparameters[ALPHA_PI],
       }),
       actions,
@@ -77,10 +79,7 @@ module.exports = new AgentBuilder({
     });
 
     const outputCritic = new LinearStateValue({
-      basis: new Fourier({
-        variables: variables + hyperparameters[INPUTS],
-        order: hyperparameters[ORDER],
-      }),
+      basis: outputBasis,
       alpha: hyperparameters[ALPHA_V],
     });
 

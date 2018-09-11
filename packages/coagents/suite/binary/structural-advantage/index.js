@@ -7,7 +7,7 @@ const {
 const SoftMax = require('@rl-js/baseline-policies/soft-max');
 const LinearStateValue = require('@rl-js/baseline-function-approximators/state-value/linear');
 const Fourier = require('@rl-js/baseline-function-approximators/generic/linear/bases/fourier');
-const Network = require('../../networks/global-critic');
+const Network = require('../../../networks/structural-advantage');
 
 const ALPHA_V = 'alpha_v';
 const ALPHA_PI = 'alpha_pi';
@@ -15,20 +15,20 @@ const INPUTS = 'inputs';
 const ORDER = 'order';
 
 module.exports = new AgentBuilder({
-  name: 'Global Critic',
-  id: 'global-critic',
+  name: 'Structural Advantage',
+  id: 'structural-advantage',
   hyperparameters: [
     new Exponential({
       name: ALPHA_V,
       min: 0.00001,
       max: 0.3,
-      default: 0.01,
+      default: 0.001,
     }),
     new Exponential({
       name: ALPHA_PI,
       min: 0.00001,
       max: 0.3,
-      default: 0.01,
+      default: 0.001,
     }),
     new Discrete({
       name: INPUTS,
@@ -59,29 +59,36 @@ module.exports = new AgentBuilder({
       alpha: hyperparameters[ALPHA_PI],
     }));
 
-    const outputBasis = new Fourier({
-      variables: hyperparameters[INPUTS],
-      order: hyperparameters[ORDER],
-    });
-
     const outputNode = new SoftMax({
       createStateValueFunction: () => new LinearStateValue({
-        basis: outputBasis,
+        basis: new Fourier({
+          variables: hyperparameters[INPUTS],
+          order: hyperparameters[ORDER],
+        }),
         alpha: hyperparameters[ALPHA_PI],
       }),
       actions,
       alpha: hyperparameters[ALPHA_PI],
     });
 
-    const stateValueFunction = new LinearStateValue({
+    const inputCritic = new LinearStateValue({
       basis,
+      alpha: hyperparameters[ALPHA_V],
+    });
+
+    const outputCritic = new LinearStateValue({
+      basis: new Fourier({
+        variables: variables + hyperparameters[INPUTS],
+        order: hyperparameters[ORDER],
+      }),
       alpha: hyperparameters[ALPHA_V],
     });
 
     return new Network({
       inputLayer,
       outputNode,
-      stateValueFunction,
+      inputCritic,
+      outputCritic,
     });
   },
 });

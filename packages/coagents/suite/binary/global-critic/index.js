@@ -7,7 +7,7 @@ const {
 const SoftMax = require('@rl-js/baseline-policies/soft-max');
 const LinearStateValue = require('@rl-js/baseline-function-approximators/state-value/linear');
 const Fourier = require('@rl-js/baseline-function-approximators/generic/linear/bases/fourier');
-const Network = require('../../networks/local-critic');
+const Network = require('../../../networks/global-critic');
 
 const ALPHA_V = 'alpha_v';
 const ALPHA_PI = 'alpha_pi';
@@ -15,8 +15,8 @@ const INPUTS = 'inputs';
 const ORDER = 'order';
 
 module.exports = new AgentBuilder({
-  name: 'Local Critic',
-  id: 'local-critic',
+  name: 'Global Critic',
+  id: 'global-critic',
   hyperparameters: [
     new Exponential({
       name: ALPHA_V,
@@ -73,21 +73,15 @@ module.exports = new AgentBuilder({
       alpha: hyperparameters[ALPHA_PI],
     });
 
-    const inputCritic = new LinearStateValue({
+    const stateValueFunction = new LinearStateValue({
       basis,
-      alpha: hyperparameters[ALPHA_V],
-    });
-
-    const outputCritic = new LinearStateValue({
-      basis: outputBasis,
       alpha: hyperparameters[ALPHA_V],
     });
 
     return new Network({
       inputLayer,
       outputNode,
-      inputCritic,
-      outputCritic,
+      stateValueFunction,
     });
   },
 });
