@@ -6,11 +6,12 @@ const { vector } = require('@rl-js/math');
 // https://arxiv.org/pdf/1802.07564.pdf
 class Gaussian extends Policy {
   constructor({
-    functionApproximator, variance, min, max,
+    functionApproximator, variance, min, max, bias = 0,
   } = {}) {
     super();
     this.variance = variance;
     this.std = this.variance ** 2;
+    this.bias = bias;
     this.min = min;
     this.max = max;
     this.functionApproximator = functionApproximator;
@@ -21,7 +22,7 @@ class Gaussian extends Policy {
   }
 
   chooseBestAction(state) {
-    return this.functionApproximator.call(state);
+    return this.functionApproximator.call(state) + this.bias;
   }
 
   probability(state, action) {
@@ -64,7 +65,7 @@ class Gaussian extends Policy {
   }
 
   getDistribution(state) {
-    const mean = this.functionApproximator.call(state);
+    const mean = this.functionApproximator.call(state) + this.bias;
     return gaussian(mean, this.variance);
   }
 
@@ -79,7 +80,7 @@ class Gaussian extends Policy {
   }
 
   derivativeOfPdf(state, action) {
-    const mean = this.functionApproximator.call(state);
+    const mean = this.functionApproximator.call(state) + this.bias;
     return (action - mean) / this.std;
   }
 }
