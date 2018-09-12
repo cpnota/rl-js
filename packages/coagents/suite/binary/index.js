@@ -9,6 +9,7 @@ module.exports = new AgentSuite({
     require('./local-critic'),
     require('./structural-advantage'),
     require('./gate'),
+    require('./stochastic-q'),
   ],
   environmentType: DiscreteEnvironment,
 });
