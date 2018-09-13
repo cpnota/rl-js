@@ -18,5 +18,9 @@
   "bugs": {
     "url": "https://github.com/cpnota/rl-js/issues"
   },
-  "homepage": "https://github.com/cpnota/rl-js#readme"
+  "homepage": "https://github.com/cpnota/rl-js#readme",
+  "dependencies": {
+    "@rl-js/interfaces": "^0.9.3",
+    "@rl-js/baseline-agent-suites": "^0.9.4"
+  }
 }
