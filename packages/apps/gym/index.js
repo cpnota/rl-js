@@ -60,14 +60,27 @@ const agent = discrete
   .buildFactory()
   .createAgent();
 
-const initialized = false;
+let initialized = false;
 
 reader.on('line', (data) => {
   try {
     ({ ob, reward, done } = JSON.parse(data.toString()));
     console.log({ ob, reward, done });
-    if (done || !initialized) agent.newEpisode(env);
-    agent.act();
+
+    if (!initialized) {
+      agent.newEpisode(env);
+      initialized = true;
+    }
+
+    if (done) {
+      const { dispatch } = env;
+      env.dispatch = () => {};
+      agent.act();
+      env.dispatch = dispatch;
+      agent.newEpisode(env);
+    } else {
+      agent.act();
+    }
   } catch (err) {
     console.error(err);
   }
