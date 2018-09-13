@@ -6,6 +6,8 @@
 
 rl-js is a framework for creating, training, and evaluating reinforcement learning agents in JavaScript. 
 
+[Try the app in your browser!](https://cpnota.github.io/rl-js/)
+
 ## ...why?
 
 Python is the scripting language currently preferred by the machine learning community, but here are a few of reasons to consider JavaScript:
