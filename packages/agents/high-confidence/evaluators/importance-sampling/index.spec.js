@@ -1,4 +1,8 @@
-const { importanceSampling, weightedImportanceSampling } = require('.');
+const {
+  importanceSampling,
+  weightedImportanceSampling,
+  perDecisionImportanceSampling,
+} = require('.');
 
 const trajectories = [[{
   state: 'state1',
@@ -61,25 +65,35 @@ const expected = [{
   estimate: 2,
 }];
 
-test('computes an importance sampling estimate for a single history', () => {
+test('computes an importance sampling estimate for a single trajectory', () => {
   const estimate = importanceSampling({ trajectories: [trajectories[0]], policy });
   expect(estimate).toEqual(expected[0].estimate);
 });
 
-test('computs importance sampling estimate for set of trajectories', () => {
+test('computs importance sampling estimate for a set of trajectories', () => {
   const estimate = importanceSampling({ trajectories, policy });
   expect(estimate).toEqual((expected[0].estimate + expected[1].estimate) / 2);
 });
 
-test('computes weighted importance sampling estimate for a single history', () => {
+test('computes weighted importance sampling estimate for a single trajectory', () => {
   const estimate = weightedImportanceSampling({ trajectories: [trajectories[0]], policy });
   expect(estimate).toEqual(expected[0].return);
 });
 
-test('computes weighted importance sampling estimate for  set of trajectories', () => {
+test('computes weighted importance sampling estimate for a set of trajectories', () => {
   const estimate = weightedImportanceSampling({ trajectories, policy });
   expect(estimate).toEqual(
     (expected[0].estimate + expected[1].estimate)
     / (expected[0].weight + expected[1].weight),
   );
+});
+
+test('computes per-decision importance sampling estimate for a single trajectory', () => {
+  const estimate = perDecisionImportanceSampling({ trajectories: [trajectories[0]], policy });
+  expect(estimate).toEqual(-13.5);
+});
+
+test.only('computes per-decision importance sampling estimate for a set of trajectories', () => {
+  const estimate = perDecisionImportanceSampling({ trajectories, policy });
+  expect(estimate).toEqual(-5.75);
 });
