@@ -5,6 +5,7 @@
     "@rl-js/baseline-agent-suites": "^0.9.5",
     "@rl-js/configuration": "^0.9.5",
     "@rl-js/environments-classic-control": "^0.9.5",
+    "@rl-js/high-confidence-agents": "^0.0.1",
     "js-combinatorics": "^0.5.3",
     "lodash": "^4.17.10",
     "mathjs": "^5.0.4",

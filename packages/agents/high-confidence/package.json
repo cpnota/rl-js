@@ -20,6 +20,9 @@
   },
   "homepage": "https://github.com/cpnota/rl-js#readme",
   "dependencies": {
+    "@rl-js/baseline-function-approximators": "^0.9.5",
+    "@rl-js/baseline-policies": "^0.9.5",
+    "@rl-js/configuration": "^0.9.5",
     "@rl-js/interfaces": "^0.9.5",
     "check-interface": "^1.1.1",
     "check-types": "^7.4.0",
