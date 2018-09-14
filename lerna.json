@@ -1,12 +1,12 @@
 {
   "packages": [
     "packages/*",
-    "packages/apps/*",
     "packages/agents/*",
+    "packages/apps/*",
+    "packages/environments/*",
     "packages/function-approximators/*",
     "packages/policies/*",
     "packages/suites/*",
-    "packages/environments/*",
     "tests/*"
   ],
   "command": {
@@ -16,5 +16,5 @@
       ]
     }
   },
-  "version": "0.9.4"
+  "version": "0.9.5"
 }
