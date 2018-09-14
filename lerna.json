@@ -2,7 +2,10 @@
   "packages": [
     "packages/*",
     "packages/apps/*",
-    "packages/baselines/*",
+    "packages/agents/*",
+    "packages/function-approximators/*",
+    "packages/policies/*",
+    "packages/suites/*",
     "packages/environments/*",
     "tests/*"
   ],
