@@ -1,4 +1,4 @@
-const { importanceSampling } = require('.');
+const { importanceSampling, weightedImportanceSampling } = require('.');
 
 const trajectories = [[{
   state: 'state1',
@@ -51,16 +51,35 @@ const policy = {
   probability: (state, action) => policy.probabilities[state][action],
 };
 
+const expected = [{
+  weight: 2,
+  return: -4,
+  estimate: -8,
+}, {
+  weight: 0.5,
+  return: 4,
+  estimate: 2,
+}];
+
 test('computes an importance sampling estimate for a single history', () => {
   const estimate = importanceSampling({ trajectories: [trajectories[0]], policy });
-  const expectedImportanceWeight = 2;
-  const expectedReturn = -4;
-  expect(estimate).toEqual(expectedImportanceWeight * expectedReturn);
+  expect(estimate).toEqual(expected[0].estimate);
 });
 
 test('computs importance sampling estimate for set of trajectories', () => {
   const estimate = importanceSampling({ trajectories, policy });
-  const trajectory1Estimate = -8;
-  const trajectory2Estimate = 2;
-  expect(estimate).toEqual((trajectory1Estimate + trajectory2Estimate) / 2);
+  expect(estimate).toEqual((expected[0].estimate + expected[1].estimate) / 2);
+});
+
+test('computes weighted importance sampling estimate for a single history', () => {
+  const estimate = weightedImportanceSampling({ trajectories: [trajectories[0]], policy });
+  expect(estimate).toEqual(expected[0].return);
+});
+
+test('computes weighted importance sampling estimate for  set of trajectories', () => {
+  const estimate = weightedImportanceSampling({ trajectories, policy });
+  expect(estimate).toEqual(
+    (expected[0].estimate + expected[1].estimate)
+    / (expected[0].weight + expected[1].weight),
+  );
 });
