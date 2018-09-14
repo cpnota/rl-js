@@ -87,7 +87,10 @@ test('computes per-decision importance sampling estimate for a set of trajectori
 });
 
 test('computes weighted per-decision importance sampling estimator for a single trajectory', () => {
-  const estimate = weightedPerDecisionImportanceSampling({ trajectories: [trajectories[0]], policy });
+  const estimate = weightedPerDecisionImportanceSampling({
+    trajectories: [trajectories[0]],
+    policy,
+  });
   expect(estimate).toEqual(-4);
 });
 
