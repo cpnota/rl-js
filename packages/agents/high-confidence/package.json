@@ -1,0 +1,22 @@
+{
+  "name": "@rl-js/high-confidence-agents",
+  "version": "0.0.1",
+  "description": "High Confidence Policy Improvement (HCPI) agents for rl-js",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cpnota/rl-js.git"
+  },
+  "keywords": [
+    "rl-js"
+  ],
+  "author": "cpnota@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cpnota/rl-js/issues"
+  },
+  "homepage": "https://github.com/cpnota/rl-js#readme"
+}
