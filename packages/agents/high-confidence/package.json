@@ -24,13 +24,11 @@
     "@rl-js/baseline-policies": "^0.9.5",
     "@rl-js/configuration": "^0.9.5",
     "@rl-js/interfaces": "^0.9.5",
+    "@rl-js/baseline-agent-suites": "^0.9.5",
+    "@rl-js/environments-classic-control": "^0.9.5",
     "check-interface": "^1.1.1",
     "check-types": "^7.4.0",
     "gaussian": "^1.1.0",
     "mathjs": "^5.1.2"
-  },
-  "devDependencies": {
-    "@rl-js/baseline-agent-suites": "^0.9.5",
-    "@rl-js/environments-classic-control": "^0.9.5"
   }
 }
