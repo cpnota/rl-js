@@ -156,10 +156,48 @@ const tdImportanceSampling = ({
   return result / trajectories.length;
 };
 
+const perDecisionTdImportanceSampling = ({
+  trajectories, policy, v, gamma = 1,
+}) => {
+  let result = 0;
+  let discountFactor = 1;
+
+  computeTdErrors({ trajectories, v });
+
+  const maxTrajectoryLength = math.max(trajectories.map(trajectory => trajectory.length));
+  const importanceWeights = new Array(trajectories.length).fill(1);
+
+  trajectories.forEach((trajectory) => {
+    result += v.call(trajectory[0].state);
+  });
+
+  for (let t = 0; t < maxTrajectoryLength; t += 1) {
+    trajectories.forEach((trajectory, i) => {
+      if (t < trajectory.length) {
+        const { state, action, probability } = trajectory[t];
+        importanceWeights[i] *= policy.probability(state, action) / probability;
+      }
+    });
+
+    /* eslint-disable no-loop-func */
+    trajectories.forEach((trajectory, i) => {
+      if (t < trajectory.length) {
+        const { tdError } = trajectory[t];
+        result += discountFactor * importanceWeights[i] * tdError;
+      }
+    });
+
+    discountFactor *= gamma;
+  }
+
+  return result / trajectories.length;
+};
+
 module.exports = {
   importanceSampling,
   weightedImportanceSampling,
   perDecisionImportanceSampling,
   weightedPerDecisionImportanceSampling,
   tdImportanceSampling,
+  perDecisionTdImportanceSampling,
 };

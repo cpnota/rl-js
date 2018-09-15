@@ -5,6 +5,7 @@ const math = require('mathjs');
 const ImportanceSampling = require('../../evaluators/importance-sampling');
 const generateTrajectories = require('./generator');
 const train = require('./train');
+const evaluate = require('./evaluate');
 
 const environmentFactory = new GridWorldFactory();
 
@@ -24,10 +25,18 @@ const agent = train({
 const evaluationPolicy = agent.policy;
 const v = agent.stateValueFunction;
 
+const samples = 100;
+const trials = 1000;
+
+const onPolicyEstimate = evaluate({
+  policy: evaluationPolicy,
+  environmentFactory,
+  trials: 1000,
+  horizon: 20,
+});
+
 const scores = {};
 
-const samples = 100;
-const trials = 100;
 for (let i = 0; i < samples; i += 1) {
   console.log(`${i * 100 / samples}%`);
   const trajectories = generateTrajectories({
@@ -56,4 +65,5 @@ Object.keys(ImportanceSampling).forEach((estimator) => {
   };
 });
 
+console.log({ onPolicyEstimate });
 console.log(scores);
