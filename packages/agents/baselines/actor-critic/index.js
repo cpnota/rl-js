@@ -23,7 +23,7 @@ module.exports = class ActorCritic extends Agent {
       StateValueFunction,
     );
     this.stateTraces = checkInterface(stateTraces, StateTraces);
-    this.stochasticPolicy = checkInterface(stochasticPolicy, Policy);
+    this.policy = checkInterface(stochasticPolicy, Policy);
     this.policyTraces = checkInterface(policyTraces, PolicyTraces);
     this.lambda = check.assert.number(lambda);
     this.gamma = check.assert.number(gamma);
@@ -37,7 +37,7 @@ module.exports = class ActorCritic extends Agent {
   }
 
   act() {
-    this.action = this.stochasticPolicy.chooseAction(this.state);
+    this.action = this.policy.chooseAction(this.state);
     this.environment.dispatch(this.action);
     this.nextState = this.environment.getObservation();
     this.update();

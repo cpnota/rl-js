@@ -9,7 +9,7 @@ const train = require('./train');
 const environmentFactory = new GridWorldFactory();
 
 const agentFactory = discrete
-  .getAgentBuilder('sarsa-lambda')
+  .getAgentBuilder('actor-critic-lambda')
   .setEnvironmentFactory(environmentFactory)
   .buildFactory();
 
@@ -24,12 +24,13 @@ const evaluationPolicy = train({
 const scores = {};
 
 const samples = 500;
+const trials = 1000;
 for (let i = 0; i < samples; i += 1) {
-  // console.log(`${i * 100 / samples}%`);
+  console.log(`${i * 100 / samples}%`);
   const trajectories = generateTrajectories({
     policy: behaviorPolicy,
     environmentFactory,
-    trials: 1000,
+    trials,
     horizon: 20,
   });
 
