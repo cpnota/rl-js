@@ -15,16 +15,19 @@ const agentFactory = discrete
 
 const behaviorPolicy = agentFactory.createAgent().policy;
 
-const evaluationPolicy = train({
+const agent = train({
   agent: agentFactory.createAgent(),
   environmentFactory,
   trials: 50,
 });
 
+const evaluationPolicy = agent.policy;
+const v = agent.stateValueFunction;
+
 const scores = {};
 
-const samples = 500;
-const trials = 1000;
+const samples = 100;
+const trials = 100;
 for (let i = 0; i < samples; i += 1) {
   console.log(`${i * 100 / samples}%`);
   const trajectories = generateTrajectories({
@@ -39,6 +42,7 @@ for (let i = 0; i < samples; i += 1) {
     const score = evaluate({
       trajectories,
       policy: evaluationPolicy,
+      v,
     });
     scores[estimator] = (scores[estimator] || []).concat(score);
   });

@@ -10,5 +10,5 @@ module.exports = ({
       agent.act();
     }
   }
-  return agent.policy;
+  return agent;
 };

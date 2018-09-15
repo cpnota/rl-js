@@ -112,9 +112,54 @@ const weightedPerDecisionImportanceSampling = ({ trajectories, policy, gamma = 1
   return result;
 };
 
+const computeTdErrors = ({ trajectories, v }) => {
+  trajectories.forEach((history) => {
+    for (let t = 0; t < history.length; t += 1) {
+      const { reward, state } = history[t];
+      let tdError;
+      if (t === history.length - 1) {
+        tdError = reward - v.call(state);
+      } else {
+        tdError = reward + v.call(history[t + 1].state) - v.call(state);
+      }
+      history[t].tdError = tdError; // eslint-disable-line
+    }
+  });
+};
+
+const tdImportanceSampling = ({
+  trajectories, policy, v, gamma = 1,
+}) => {
+  let result = 0;
+
+  computeTdErrors({ trajectories, v });
+
+  trajectories.forEach((trajectory) => {
+    let importanceWeight = 1;
+    let returns = 0;
+    let discountFactor = 1;
+
+    trajectory.forEach(({
+      state,
+      action,
+      tdError,
+      probability,
+    }) => {
+      importanceWeight *= policy.probability(state, action) / probability;
+      returns += discountFactor * tdError;
+      discountFactor *= gamma;
+    });
+
+    result += importanceWeight * returns + v.call(trajectory[0].state);
+  });
+
+  return result / trajectories.length;
+};
+
 module.exports = {
   importanceSampling,
   weightedImportanceSampling,
   perDecisionImportanceSampling,
   weightedPerDecisionImportanceSampling,
+  tdImportanceSampling,
 };
