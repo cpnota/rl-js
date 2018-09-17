@@ -4,7 +4,8 @@
   "description": "High Confidence Policy Improvement (HCPI) agents for rl-js",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "ope": "node experiments/ope"
   },
   "repository": {
     "type": "git",
