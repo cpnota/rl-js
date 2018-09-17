@@ -26,7 +26,7 @@ const evaluationPolicy = agent.policy;
 const v = agent.stateValueFunction;
 
 const samples = 100;
-const trials = 1000;
+const trials = 100;
 
 const onPolicyEstimate = evaluate({
   policy: evaluationPolicy,
@@ -37,6 +37,9 @@ const onPolicyEstimate = evaluate({
 
 const scores = {};
 
+// const estimators = Object.keys(ImportanceSampling);
+const estimators = ['importanceSampling', 'tdImportanceSampling', 'residualImportanceSampling', 'safeResidualImportanceSampling'];
+
 for (let i = 0; i < samples; i += 1) {
   console.log(`${i * 100 / samples}%`);
   const trajectories = generateTrajectories({
@@ -46,7 +49,8 @@ for (let i = 0; i < samples; i += 1) {
     horizon: 20,
   });
 
-  Object.keys(ImportanceSampling).forEach((estimator) => {
+  estimators.forEach((estimator) => {
+  // Object.keys(ImportanceSampling).forEach((estimator) => {
     const evaluate = ImportanceSampling[estimator];
     const score = evaluate({
       trajectories,
@@ -57,7 +61,7 @@ for (let i = 0; i < samples; i += 1) {
   });
 }
 
-Object.keys(ImportanceSampling).forEach((estimator) => {
+estimators.forEach((estimator) => {
   const results = scores[estimator];
   scores[estimator] = {
     mean: math.mean(results),
