@@ -57,7 +57,7 @@ module.exports = class OffPolicyCMAES extends Agent {
         (epsilons, i) => scores[i] * epsilons[parameterIndex],
       ))));
     this.policy.setParameters(this.parameters);
-    this.trajectories = []
+    this.trajectories = [];
   }
 
   generatePopulation() {
