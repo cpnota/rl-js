@@ -12,6 +12,7 @@ const AgentSuite = require('@rl-js/configuration/agent-suite');
 const DiscreteEnvironment = require('@rl-js/configuration/environment-types/discrete');
 const LCPI = require('../agents/lcpi');
 const importanceSamplingEvaluators = require('../evaluators/importance-sampling');
+const CMA_ES = require('../generators/cma-es');
 
 const ALPHA = 'alpha';
 const STD = 'std';
@@ -50,7 +51,7 @@ const builder = evaluator => new AgentBuilder({
       name: EPISODES_PER_UPDATE,
       min: 1,
       max: 10,
-      default: 5,
+      default: 1,
     }),
   ],
   createAgent: (environmentFactory, hyperparameters) => {
@@ -71,12 +72,18 @@ const builder = evaluator => new AgentBuilder({
       alpha: hyperparameters[ALPHA],
     });
 
-    return new LCPI({
-      policy,
+    const generator = new CMA_ES({
       std: hyperparameters[STD],
       alpha: hyperparameters[ALPHA],
       populationSize: hyperparameters[POPULATION_SIZE],
+      policy,
+      evaluator,
+    });
+
+    return new LCPI({
+      policy,
       episodesPerUpdate: hyperparameters[EPISODES_PER_UPDATE],
+      generator,
       evaluator,
     });
   },

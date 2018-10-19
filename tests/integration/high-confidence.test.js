@@ -1,5 +1,6 @@
 const configuration = require('@rl-js/configuration');
 configuration.registerAgentSuite(require('@rl-js/high-confidence-agents/suites/off-policy-cma-es'));
+configuration.registerAgentSuite(require('@rl-js/high-confidence-agents/suites/lcpi'));
 configuration.registerEnvironmentSuite(require('@rl-js/environments-classic-control'));
 
 configuration.listAgentSuites().forEach((agentSuite) => {
@@ -18,6 +19,12 @@ configuration.listAgentSuites().forEach((agentSuite) => {
             const environment = environmentFactory.createEnvironment();
             const agent = agentFactory.createAgent();
             agent.newEpisode(environment);
+
+            for (let t = 0; t < 3; t += 1) {
+              agent.act();
+            }
+
+            agent.newEpisode(environmentFactory.createEnvironment());
 
             for (let t = 0; t < 3; t += 1) {
               agent.act();

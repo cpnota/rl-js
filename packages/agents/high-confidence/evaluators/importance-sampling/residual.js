@@ -1,5 +1,3 @@
-const math = require('mathjs');
-
 const optimizeResidual = ({ trajectories, v, policy }) => {
   trajectories.forEach((history) => {
     for (let t = 0; t < history.length; t += 1) {

@@ -117,6 +117,6 @@ module.exports = {
   weightedImportanceSampling,
   perDecisionImportanceSampling,
   weightedPerDecisionImportanceSampling,
-  ...require('./td'),
-  ...require('./residual'),
+  // ...require('./td'),
+  // ...require('./residual'),
 };
