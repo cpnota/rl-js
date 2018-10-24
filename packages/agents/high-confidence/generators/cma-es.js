@@ -49,7 +49,10 @@ class CMA_ES {
   evaluate(epsilons) {
     const parameters = this.parameters.map((parameter, i) => parameter + this.std * epsilons[i]);
     this.policy.setParameters(parameters);
-    return math.stats.mean(this.evaluator({ trajectories: this.trajectories, policy: this.policy }));
+    return math.stats.mean(this.evaluator({
+      trajectories: this.trajectories,
+      policy: this.policy,
+    }));
   }
 }
 
