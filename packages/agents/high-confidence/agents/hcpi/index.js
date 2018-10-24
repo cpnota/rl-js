@@ -2,37 +2,37 @@ const {
   Agent,
   Policy,
 } = require('@rl-js/interfaces');
-const gaussian = require('gaussian');
 const checkInterface = require('check-interface');
-const check = require('check-types');
-const math = require('mathjs');
 
 module.exports = class HCPI extends Agent {
   constructor({
     policy,
-    std,
-    populationSize,
-    alpha,
+    generator,
     episodesPerUpdate,
-    evaluator,
+    safetyTest,
+    dataSplit, // amount of data in train set
   }) {
     super();
     this.policy = checkInterface(policy, Policy);
-    this.parameters = this.policy.getParameters();
-    this.std = check.assert.number(std);
-    this.populationSize = check.assert.number(populationSize);
-    this.alpha = alpha;
-    this.evaluator = evaluator;
+    this.generator = generator;
+    this.safetyTest = safetyTest;
     this.episodesPerUpdate = episodesPerUpdate;
-    this.evaluate = this.evaluate.bind(this);
-    this.trajectories = [];
+    this.train = [];
+    this.test = [];
+    this.count = 0;
+    this.dataSplit = dataSplit;
   }
 
   newEpisode(environment) {
     this.environment = environment;
-    if (this.history) this.trajectories.push(this.history);
-    if (this.shouldTryUpdate()) this.tryUpdate();
-    this.history = [];
+
+    if (this.history) {
+      this.record(this.history);
+      this.history = [];
+    }
+
+    if (this.shouldUpdate()) this.tryUpdate();
+    this.count += 1;
   }
 
   act() {
@@ -49,50 +49,35 @@ module.exports = class HCPI extends Agent {
     });
   }
 
+  record(history) {
+    if (Math.random() < this.dataSplit) {
+      this.train.push(history);
+    } else {
+      this.test.push(history);
+    }
+  }
+
   shouldUpdate() {
-    return this.trajectories.length >= this.episodesPerUpdate;
+    return this.train.length > 0 && this.test.length > 0 && (this.count >= this.episodesPerUpdate);
   }
 
   tryUpdate() {
-    const candidate = this.generateCandidate();
+    // const oldScore = this.evaluator({ policy: this.policy, trajectories: this.trajectories });
+    const candidate = this.generator.generateCandidate(this.train);
 
-    const oldParameters = this.policy.getParameters();
-    const oldScore = this.evaluator({ policy: this.policy, trajectories: this.trajectories });
-    this.policy.setParameters(candidate);
-    const candidateScore = this.evaluator({ policy: this.policy, trajectories: this.trajectories });
+    if (candidate != null) {
+      const current = this.policy.getParameters();
+      const candidateIsSafe = this.safetyTest.run({
+        candidate, current, policy: this.policy, trajectories: this.trajectories,
+      });
 
-    if (candidateScore < oldScore) {
-      this.policy.setParameters(oldParameters); // failed
-    }
-  }
-
-  generateCandidate() {
-    const population = this.generatePopulation();
-    const scores = population.map(this.evaluate);
-    this.parameters = this.parameters.map((parameterValue, parameterIndex) => (
-      parameterValue + this.alpha / this.std * math.mean(population.map(
-        (epsilons, i) => scores[i] * epsilons[parameterIndex],
-      ))));
-    return this.parameters;
-  }
-
-  generatePopulation() {
-    const distribution = gaussian(0, 1);
-    const population = [];
-
-    // mirror each perturbation
-    for (let p = 0; p < this.populationSize; p += 2) {
-      const epsilons1 = this.parameters.map(() => distribution.ppf(Math.random()));
-      const epsilons2 = epsilons1.map(e => -e);
-      population.push(epsilons1, epsilons2);
+      if (candidateIsSafe) {
+        this.policy.setParameters(candidate);
+      } else {
+        this.policy.setParameters(current);
+      }
     }
 
-    return population;
-  }
-
-  evaluate(epsilons) {
-    const parameters = this.parameters.map((parameter, i) => parameter + this.std * epsilons[i]);
-    this.policy.setParameters(parameters);
-    return this.evaluator({ trajectories: this.trajectories, policy: this.policy });
+    this.count = 0;
   }
 };

@@ -29,7 +29,7 @@ module.exports = class T_Test {
     const differences = math.vector.subtract(candidateScores, currentScores);
     const [mean, std] = math.stats.gaussian(differences);
     const t = t_inv(1 - delta, m - 1);
-    const score = mean - std / Math.sqrt(m) * t;
+    const score = mean + std / Math.sqrt(m) * t;
 
     return score > 0;
   }

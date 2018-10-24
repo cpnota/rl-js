@@ -23,8 +23,8 @@ const EPISODES_PER_UPDATE = 'episodes_per_update';
 const DELTA = 'delta';
 
 const builder = evaluator => new AgentBuilder({
-  name: `HCPI ${evaluator.name}`,
-  id: `hcpi-${evaluator.name}`,
+  name: `MCPI ${evaluator.name}`,
+  id: `mcpi-${evaluator.name}`,
   hyperparameters: [
     new Exponential({
       name: ALPHA,
@@ -55,11 +55,11 @@ const builder = evaluator => new AgentBuilder({
       max: 100,
       default: 10,
     }),
-    new Exponential({
+    new Linear({
       name: DELTA,
-      min: 0.01,
+      min: 0.5,
       max: 1,
-      default: 0.1,
+      default: 0.75,
     }),
   ],
   createAgent: (environmentFactory, hyperparameters) => {
@@ -100,8 +100,8 @@ const builder = evaluator => new AgentBuilder({
 });
 
 module.exports = new AgentSuite({
-  name: 'High Confidence',
-  id: 'high-confidence',
+  name: 'Medium Confidence',
+  id: 'medium-confidence',
   builders: Object.values(importanceSamplingEvaluators).map(builder),
   environmentType: DiscreteEnvironment,
 });
