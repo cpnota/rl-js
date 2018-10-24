@@ -47,30 +47,24 @@ const weightedImportanceSampling = ({ trajectories, policy, gamma = 1 }) => {
 const perDecisionImportanceSampling = ({ trajectories, policy, gamma = 1 }) => {
   const maxTrajectoryLength = math.stats.max(trajectories.map(trajectory => trajectory.length));
   const importanceWeights = new Array(trajectories.length).fill(1);
-
-  let result = 0;
+  const results = new Array(trajectories.length).fill(0);
   let discountFactor = 1;
 
   for (let t = 0; t < maxTrajectoryLength; t += 1) {
-    trajectories.forEach((trajectory, i) => {
+    for (let i = 0; i < trajectories.length; i += 1) {
+      const trajectory = trajectories[i];
       if (t < trajectory.length) {
-        const { state, action, probability } = trajectory[t];
+        const {
+          state, action, probability, reward,
+        } = trajectory[t];
         importanceWeights[i] *= policy.probability(state, action) / probability;
+        results[i] += discountFactor * importanceWeights[i] * reward;
       }
-    });
-
-    /* eslint-disable no-loop-func */
-    trajectories.forEach((trajectory, i) => {
-      if (t < trajectory.length) {
-        const { reward } = trajectory[t];
-        result += discountFactor * importanceWeights[i] * reward;
-      }
-    });
-
+    }
     discountFactor *= gamma;
   }
 
-  return result / trajectories.length;
+  return results;
 };
 
 const weightedPerDecisionImportanceSampling = ({ trajectories, policy, gamma = 1 }) => {
@@ -107,8 +101,7 @@ const weightedPerDecisionImportanceSampling = ({ trajectories, policy, gamma = 1
 module.exports = {
   importanceSampling,
   weightedImportanceSampling,
-  // weightedImportanceSampling,
-  // perDecisionImportanceSampling,
+  perDecisionImportanceSampling,
   // weightedPerDecisionImportanceSampling,
   // ...require('./td'),
   // ...require('./residual'),
