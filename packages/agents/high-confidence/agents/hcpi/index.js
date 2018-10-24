@@ -28,11 +28,11 @@ module.exports = class HCPI extends Agent {
 
     if (this.history) {
       this.record(this.history);
-      this.history = [];
     }
 
     if (this.shouldUpdate()) this.tryUpdate();
     this.count += 1;
+    this.history = [];
   }
 
   act() {
@@ -68,7 +68,7 @@ module.exports = class HCPI extends Agent {
     if (candidate != null) {
       const current = this.policy.getParameters();
       const candidateIsSafe = this.safetyTest.run({
-        candidate, current, policy: this.policy, trajectories: this.trajectories,
+        candidate, current, policy: this.policy, trajectories: this.test,
       });
 
       if (candidateIsSafe) {

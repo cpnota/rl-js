@@ -10,7 +10,7 @@ const LinearStateValue = require('@rl-js/baseline-function-approximators/state-v
 const Fourier = require('@rl-js/baseline-function-approximators/generic/linear/bases/fourier');
 const AgentSuite = require('@rl-js/configuration/agent-suite');
 const DiscreteEnvironment = require('@rl-js/configuration/environment-types/discrete');
-const HCPI = require('../agents/hcpi');
+const LCPI = require('../agents/lcpi');
 const importanceSamplingEvaluators = require('../evaluators/importance-sampling');
 const T_Test = require('../safety-tests/t-test'); // eslint-disable-line camelcase
 const CMA_ES = require('../generators/cma-es');
@@ -21,11 +21,10 @@ const POPULATION_SIZE = 'population_size';
 const ORDER = 'order';
 const EPISODES_PER_UPDATE = 'episodes_per_update';
 const DELTA = 'delta';
-const DATA_SPLIT = 'data_split';
 
 const builder = evaluator => new AgentBuilder({
-  name: `HCPI ${evaluator.name}`,
-  id: `hcpi-${evaluator.name}`,
+  name: `MCPI ${evaluator.name}`,
+  id: `mcpi-${evaluator.name}`,
   hyperparameters: [
     new Exponential({
       name: ALPHA,
@@ -62,12 +61,6 @@ const builder = evaluator => new AgentBuilder({
       max: 1,
       default: 0.75,
     }),
-    new Linear({
-      name: DATA_SPLIT,
-      min: 0.1,
-      max: 0.9,
-      default: 0.2,
-    }),
   ],
   createAgent: (environmentFactory, hyperparameters) => {
     const variables = environmentFactory.getObservationCount();
@@ -97,19 +90,18 @@ const builder = evaluator => new AgentBuilder({
 
     const safetyTest = new T_Test({ evaluator, delta: hyperparameters[DELTA] });
 
-    return new HCPI({
+    return new LCPI({
       policy,
       episodesPerUpdate: hyperparameters[EPISODES_PER_UPDATE],
       generator,
       safetyTest,
-      dataSplit: hyperparameters[DATA_SPLIT],
     });
   },
 });
 
 module.exports = new AgentSuite({
-  name: 'High Confidence',
-  id: 'high-confidence',
+  name: 'Medium Confidence',
+  id: 'medium-confidence',
   builders: Object.values(importanceSamplingEvaluators).map(builder),
   environmentType: DiscreteEnvironment,
 });
