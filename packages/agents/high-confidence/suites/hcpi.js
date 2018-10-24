@@ -52,8 +52,8 @@ const builder = evaluator => new AgentBuilder({
     new Linear({
       name: EPISODES_PER_UPDATE,
       min: 1,
-      max: 10,
-      default: 1,
+      max: 100,
+      default: 10,
     }),
     new Exponential({
       name: DELTA,

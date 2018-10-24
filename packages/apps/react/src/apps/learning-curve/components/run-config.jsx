@@ -4,7 +4,7 @@ import { Form } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
-const DEFAULT_EPISODES = 30;
+const DEFAULT_EPISODES = 200;
 const DEFAULT_TRIALS = 20;
 
 const onChange = setter => (e) => {

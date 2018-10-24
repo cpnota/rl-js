@@ -13,20 +13,20 @@ configuration.listAgentSuites().forEach((agentSuite) => {
             const environmentFactory = environmentBuilder.buildFactory();
             const agentFactory = agentBuilder
               .setEnvironmentFactory(environmentFactory)
+              .setHyperparameters({
+                episodes_per_update: 1,
+              })
               .buildFactory();
 
-            const environment = environmentFactory.createEnvironment();
             const agent = agentFactory.createAgent();
-            agent.newEpisode(environment);
 
-            for (let t = 0; t < 3; t += 1) {
-              agent.act();
-            }
+            for (let e = 0; e < 5; e += 1) {
+              const environment = environmentFactory.createEnvironment();
+              agent.newEpisode(environment);
 
-            agent.newEpisode(environmentFactory.createEnvironment());
-
-            for (let t = 0; t < 3; t += 1) {
-              agent.act();
+              for (let t = 0; t < 3; t += 1) {
+                agent.act();
+              }
             }
           });
       });
