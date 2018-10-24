@@ -1,3 +1,5 @@
+const math = require('@rl-js/math');
+
 module.exports = class MonotoneSafetyTest {
   constructor({ evaluator }) {
     this.evaluator = evaluator;
@@ -10,9 +12,9 @@ module.exports = class MonotoneSafetyTest {
     trajectories,
   }) {
     policy.setParameters(current);
-    const currentScore = this.evaluator({ trajectories, policy });
+    const currentScore = math.stats.mean(this.evaluator({ trajectories, policy }));
     policy.setParameters(candidate);
-    const candidateScore = this.evaluator({ trajectories, policy });
+    const candidateScore = math.stats.mean(this.evaluator({ trajectories, policy }));
     return candidateScore > currentScore;
   }
 };

@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-const math = require('mathjs');
+const math = require('@rl-js/math');
 const t_inv = require('./t-inv');
 
 module.exports = class T_Test {
@@ -26,11 +26,10 @@ module.exports = class T_Test {
     const currentScores = evaluator({ trajectories, policy });
 
     // perform one-sided t-test on the difference
-    const differences = math.subtract(candidateScores, currentScores);
-    const mean = math.mean(differences);
-    const std = math.std(differences);
+    const differences = math.vector.subtract(candidateScores, currentScores);
+    const [mean, std] = math.stats.gaussian(differences);
     const t = t_inv(1 - delta, m - 1);
-    const score = mean + std / math.sqrt(m) * t;
+    const score = mean - std / Math.sqrt(m) * t;
 
     return score > 0;
   }

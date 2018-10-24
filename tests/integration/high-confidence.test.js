@@ -1,6 +1,5 @@
 const configuration = require('@rl-js/configuration');
-configuration.registerAgentSuite(require('@rl-js/high-confidence-agents/suites/off-policy-cma-es'));
-configuration.registerAgentSuite(require('@rl-js/high-confidence-agents/suites/lcpi'));
+configuration.registerAgentSuite(require('@rl-js/high-confidence-agents/suites'));
 configuration.registerEnvironmentSuite(require('@rl-js/environments-classic-control'));
 
 configuration.listAgentSuites().forEach((agentSuite) => {

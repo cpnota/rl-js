@@ -10,18 +10,21 @@ const LinearStateValue = require('@rl-js/baseline-function-approximators/state-v
 const Fourier = require('@rl-js/baseline-function-approximators/generic/linear/bases/fourier');
 const AgentSuite = require('@rl-js/configuration/agent-suite');
 const DiscreteEnvironment = require('@rl-js/configuration/environment-types/discrete');
-const CMA_ES = require('../agents/off-policy-cma-es');
+const LCPI = require('../agents/lcpi');
 const importanceSamplingEvaluators = require('../evaluators/importance-sampling');
+const T_Test = require('../safety-tests/t-test'); // eslint-disable-line camelcase
+const CMA_ES = require('../generators/cma-es');
 
 const ALPHA = 'alpha';
 const STD = 'std';
 const POPULATION_SIZE = 'population_size';
 const ORDER = 'order';
 const EPISODES_PER_UPDATE = 'episodes_per_update';
+const DELTA = 'delta';
 
 const builder = evaluator => new AgentBuilder({
-  name: `OP CMA-ES ${evaluator.name}`,
-  id: `op-cma-es-${evaluator.name}`,
+  name: `HCPI ${evaluator.name}`,
+  id: `hcpi-${evaluator.name}`,
   hyperparameters: [
     new Exponential({
       name: ALPHA,
@@ -50,7 +53,13 @@ const builder = evaluator => new AgentBuilder({
       name: EPISODES_PER_UPDATE,
       min: 1,
       max: 10,
-      default: 5,
+      default: 1,
+    }),
+    new Exponential({
+      name: DELTA,
+      min: 0.01,
+      max: 1,
+      default: 0.1,
     }),
   ],
   createAgent: (environmentFactory, hyperparameters) => {
@@ -71,20 +80,28 @@ const builder = evaluator => new AgentBuilder({
       alpha: hyperparameters[ALPHA],
     });
 
-    return new CMA_ES({
-      policy,
+    const generator = new CMA_ES({
       std: hyperparameters[STD],
       alpha: hyperparameters[ALPHA],
       populationSize: hyperparameters[POPULATION_SIZE],
-      episodesPerUpdate: hyperparameters[EPISODES_PER_UPDATE],
+      policy,
       evaluator,
+    });
+
+    const safetyTest = new T_Test({ evaluator, delta: hyperparameters[DELTA] });
+
+    return new LCPI({
+      policy,
+      episodesPerUpdate: hyperparameters[EPISODES_PER_UPDATE],
+      generator,
+      safetyTest,
     });
   },
 });
 
 module.exports = new AgentSuite({
-  name: 'Off Policy',
-  id: 'off-policy',
+  name: 'High Confidence',
+  id: 'high-confidence',
   builders: Object.values(importanceSamplingEvaluators).map(builder),
   environmentType: DiscreteEnvironment,
 });

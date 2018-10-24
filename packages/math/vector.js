@@ -6,6 +6,14 @@ const add = (v1, v2) => {
   return result;
 };
 
+const subtract = (v1, v2) => {
+  const result = new Array(v1.length);
+  for (let i = 0; i < v1.length; i += 1) {
+    result[i] = v1[i] - v2[i];
+  }
+  return result;
+};
+
 const dot = (v1, v2) => {
   let result = 0;
   for (let i = 0; i < v1.length; i += 1) {
@@ -36,6 +44,12 @@ const inplace = {
     }
     return vector;
   },
+  subtract: (vector, v2) => {
+    for (let i = 0; i < vector.length; i += 1) {
+      vector[i] -= v2[i];
+    }
+    return vector;
+  },
   update: (alpha, vector, direction) => {
     for (let i = 0; i < vector.length; i += 1) {
       vector[i] += alpha * direction[i];
@@ -48,5 +62,6 @@ module.exports = {
   add,
   dot,
   scale,
+  subtract,
   inplace,
 };

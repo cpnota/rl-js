@@ -5,7 +5,7 @@ const {
 const gaussian = require('gaussian');
 const checkInterface = require('check-interface');
 const check = require('check-types');
-const math = require('mathjs');
+const math = require('@rl-js/math');
 
 module.exports = class OffPolicyCMAES extends Agent {
   constructor({
@@ -53,7 +53,7 @@ module.exports = class OffPolicyCMAES extends Agent {
     const population = this.generatePopulation();
     const scores = population.map(this.evaluate);
     this.parameters = this.parameters.map((parameterValue, parameterIndex) => (
-      parameterValue + this.alpha / this.std * math.mean(population.map(
+      parameterValue + this.alpha / this.std * math.stats.mean(population.map(
         (epsilons, i) => scores[i] * epsilons[parameterIndex],
       ))));
     this.policy.setParameters(this.parameters);
@@ -77,6 +77,6 @@ module.exports = class OffPolicyCMAES extends Agent {
   evaluate(epsilons) {
     const parameters = this.parameters.map((parameter, i) => parameter + this.std * epsilons[i]);
     this.policy.setParameters(parameters);
-    return this.evaluator({ trajectories: this.trajectories, policy: this.policy });
+    return math.stats.mean(this.evaluator({ trajectories: this.trajectories, policy: this.policy }));
   }
 };
