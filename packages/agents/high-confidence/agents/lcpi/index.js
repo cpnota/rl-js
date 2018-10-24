@@ -9,14 +9,15 @@ module.exports = class LCPI extends Agent {
     policy,
     generator,
     episodesPerUpdate,
-    evaluator,
+    safetyTest,
   }) {
     super();
     this.policy = checkInterface(policy, Policy);
     this.generator = generator;
-    this.evaluator = evaluator;
+    this.safetyTest = safetyTest;
     this.episodesPerUpdate = episodesPerUpdate;
     this.trajectories = [];
+    this.count = 0;
   }
 
   newEpisode(environment) {
@@ -24,6 +25,7 @@ module.exports = class LCPI extends Agent {
     if (this.history) this.trajectories.push(this.history);
     if (this.shouldUpdate()) this.tryUpdate();
     this.history = [];
+    this.count += 1;
   }
 
   act() {
@@ -41,19 +43,26 @@ module.exports = class LCPI extends Agent {
   }
 
   shouldUpdate() {
-    return this.trajectories.length >= this.episodesPerUpdate;
+    return this.count >= this.episodesPerUpdate;
   }
 
   tryUpdate() {
-    const oldParameters = this.policy.getParameters();
-    const oldScore = this.evaluator({ policy: this.policy, trajectories: this.trajectories });
-
+    // const oldScore = this.evaluator({ policy: this.policy, trajectories: this.trajectories });
     const candidate = this.generator.generateCandidate(this.trajectories);
-    this.policy.setParameters(candidate);
-    const candidateScore = this.evaluator({ policy: this.policy, trajectories: this.trajectories });
 
-    if (candidateScore < oldScore) {
-      this.policy.setParameters(oldParameters); // failed
+    if (candidate != null) {
+      const current = this.policy.getParameters();
+      const candidateIsSafe = this.safetyTest.run({
+        candidate, current, policy: this.policy, trajectories: this.trajectories,
+      });
+
+      if (candidateIsSafe) {
+        this.policy.setParameters(candidate);
+      } else {
+        this.policy.setParameters(current);
+      }
     }
+
+    this.count = 0;
   }
 };

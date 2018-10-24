@@ -12,6 +12,7 @@ const AgentSuite = require('@rl-js/configuration/agent-suite');
 const DiscreteEnvironment = require('@rl-js/configuration/environment-types/discrete');
 const LCPI = require('../agents/lcpi');
 const importanceSamplingEvaluators = require('../evaluators/importance-sampling');
+const MonotoneSafetyTest = require('../safety-tests/monotone');
 const CMA_ES = require('../generators/cma-es');
 
 const ALPHA = 'alpha';
@@ -80,11 +81,13 @@ const builder = evaluator => new AgentBuilder({
       evaluator,
     });
 
+    const safetyTest = new MonotoneSafetyTest({ evaluator });
+
     return new LCPI({
       policy,
       episodesPerUpdate: hyperparameters[EPISODES_PER_UPDATE],
       generator,
-      evaluator,
+      safetyTest,
     });
   },
 });
