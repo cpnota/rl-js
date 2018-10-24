@@ -1,5 +1,3 @@
-const jStat = require('jStat')
+const jStat = require('jStat');
 
-module.exports = (p, degreesOfFreedom) => {
-  return jStat.studentt.inv(p, degreesOfFreedom)
-}
+module.exports = (p, degreesOfFreedom) => jStat.studentt.inv(p, degreesOfFreedom);
