@@ -9,6 +9,7 @@ import registerServiceWorker from './register-service-worker';
 import LearningCurveApp from './apps/learning-curve';
 import HyperparameterSearchApp from './apps/hyperparameter-search';
 import SensitivityAnalysisApp from './apps/sensitivity-analysis';
+import HCPI from './apps/hcpi';
 // import BehaviorVisualizationApp from './apps/behavior-visualization';
 
 const apps = [
@@ -16,6 +17,7 @@ const apps = [
   HyperparameterSearchApp,
   LearningCurveApp,
   SensitivityAnalysisApp,
+  HCPI,
 ];
 
 /* eslint-disable react/jsx-filename-extension */
