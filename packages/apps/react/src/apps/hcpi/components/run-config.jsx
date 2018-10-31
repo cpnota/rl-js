@@ -65,7 +65,7 @@ const mapStateToProps = (state, { queueTasks }) => ({
   episodes: state.episodes || undefined,
   trials: state.trials || undefined,
   queueTasks: (trials, episodes) => queueTasks(new Array(trials).fill({
-    type: 'standard',
+    type: 'hcpi',
     payload: {
       agent: state.agent,
       environment: state.environment,

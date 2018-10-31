@@ -6,7 +6,10 @@ const defaultState = {
   environment: undefined,
   hyperparameters: {},
   step: 0,
-  results: [],
+  // results: [],
+  improvements: 0,
+  successes: 0,
+  trials: 0,
   errors: 0,
 };
 
@@ -53,7 +56,8 @@ const learningCurve = (state = defaultState, action) => {
     case types.RECORD_TRIAL:
       return {
         ...state,
-        results: state.results.concat([action.payload]),
+        improvements: action.payload ? state.improvements + 1 : state.improvements,
+        successes: state.successes + 1,
       };
     case types.RECORD_TRIAL_ERROR:
       return {

@@ -53,7 +53,7 @@ export const recordTrialError = (message) => {
 };
 
 export const handleMessage = (message) => {
-  if (message.payload.task.type === 'standard') {
+  if (message.payload.task.type === 'hcpi') {
     return message.error ? recordTrialError(message) : recordTrial(message.payload.result);
   }
 
