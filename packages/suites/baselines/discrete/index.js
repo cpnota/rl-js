@@ -6,6 +6,7 @@ module.exports = new AgentSuite({
   id: 'baseline-discrete-lfa',
   builders: [
     require('./actor-critic-lambda'),
+    require('./q-a2c'),
     require('./cma-es'),
     require('./nac-td'),
     require('./ppo'),
