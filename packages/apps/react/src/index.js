@@ -9,10 +9,10 @@ import registerServiceWorker from './register-service-worker';
 import LearningCurveApp from './apps/learning-curve';
 import HyperparameterSearchApp from './apps/hyperparameter-search';
 import SensitivityAnalysisApp from './apps/sensitivity-analysis';
-// import BehaviorVisualizationApp from './apps/behavior-visualization';
+import BehaviorVisualizationApp from './apps/behavior-visualization';
 
 const apps = [
-  // BehaviorVisualizationApp, // not implemented
+  BehaviorVisualizationApp,
   HyperparameterSearchApp,
   LearningCurveApp,
   SensitivityAnalysisApp,

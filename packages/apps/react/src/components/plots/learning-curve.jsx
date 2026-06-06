@@ -6,7 +6,9 @@ import math from 'mathjs';
 /* eslint-disable react/pure-stateless-function */
 export default class LearningCurve extends React.PureComponent {
   render() {
-    const { title, trials } = this.props;
+    const {
+      title, trials, width, height,
+    } = this.props;
     const episodes = math.transpose(trials);
     const mean = episodes.map(episode => math.mean(episode));
     const std = episodes.map(episode => math.std(episode));
@@ -29,7 +31,14 @@ export default class LearningCurve extends React.PureComponent {
 
         layout={{
           title: `${title}`,
-          width: 500,
+          width,
+          height,
+          margin: {
+            l: 60,
+            r: 30,
+            t: 60,
+            b: 55,
+          },
         }}
 
         xaxis={{
@@ -39,6 +48,10 @@ export default class LearningCurve extends React.PureComponent {
         yaxis={{
           title: 'Returns',
         }}
+
+        config={{
+          displayModeBar: false,
+        }}
       />
     );
   }
@@ -47,9 +60,13 @@ export default class LearningCurve extends React.PureComponent {
 LearningCurve.propTypes = {
   title: PropTypes.string,
   trials: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.number)),
+  width: PropTypes.number,
+  height: PropTypes.number,
 };
 
 LearningCurve.defaultProps = {
   title: 'Learning Curve',
   trials: [],
+  width: 500,
+  height: 450,
 };
